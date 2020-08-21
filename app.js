@@ -1,5 +1,8 @@
 'use strict';
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { join } = require('path');
 const express = require('express');
 const createError = require('http-errors');
@@ -19,7 +22,7 @@ const trefleRouter = require('./routes/trefle');
 
 const app = express();
 
-//app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 
 app.use(serveFavicon(join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
@@ -50,9 +53,9 @@ app.use(
 );
 app.use(deserializeUser);
 
-//app.use('/', indexRouter);
+app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
-app.use('/', trefleRouter);
+app.use('/search', trefleRouter);
 
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => {

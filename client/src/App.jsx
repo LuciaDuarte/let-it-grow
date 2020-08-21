@@ -62,7 +62,13 @@ class App extends Component {
       <div className="App">
         <Navbar user={this.state.user} onSignOut={this.handleSignOut} />
         <Switch>
-          <Route path="/" component={Homeview} exact />
+          <ProtectedRoute
+            path="/"
+            render={props => <Homeview {...props} user={this.state.user} />}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+          />
           <ProtectedRoute
             path="/authentication/sign-up"
             render={props => (
@@ -80,8 +86,6 @@ class App extends Component {
             redirect="/"
           />
           <Route path="/profile" component={Profile} exact />
-          {/* <Route path="/authentication/sign-in" component={SignIn} exact />
-          <Route path="/authentication/sign-up" component={SignUp} exact /> */}
           <Route path="/gardens" component={Gardens} exact />
           <Route path="/gardens/new" component={NewGarden} exact />
           <Route path="/gardens/:gardenId" component={SingleGarden} />

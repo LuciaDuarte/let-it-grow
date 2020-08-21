@@ -1,16 +1,12 @@
 import axios from 'axios';
-const token = process.env.REACT_APP_API_TREFLE_TOKEN;
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const api = axios.create({
-  baseURL: `https://trefle.io/api/v1`,
-  //withCredentials: true
-  headers: {
-    Authentication: `bearer ${token}`
-  }
+  baseURL: `${baseUrl}/search`
 });
 
 export const searchPlants = async query => {
-  const response = await axios.get('http://localhost:3020/test', {
+  const response = await api.get('/list', {
     params: {
       query
     }

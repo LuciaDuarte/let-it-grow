@@ -25,14 +25,14 @@ class SignIn extends Component {
     signIn(body)
       .then(data => {
         const { user } = data;
-        //this.props.onUserUpdate(user);
+        this.props.onUserUpdate(user);
       })
       .catch(error => {
         console.log(error);
-        // const serverError = error.response.data.error;
-        // this.setState({
-        //   error: serverError
-        // });
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   };
 

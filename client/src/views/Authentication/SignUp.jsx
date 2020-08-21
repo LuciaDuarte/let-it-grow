@@ -25,7 +25,7 @@ class SignUp extends Component {
     signUp(body)
       .then(data => {
         const { user } = data;
-        //this.props.onUserUpdate(user);
+        this.props.onUserUpdate(user);
       })
       .catch(error => {
         console.log(error);
@@ -41,7 +41,7 @@ class SignUp extends Component {
             id="input-name"
             type="text"
             name="name"
-            placeholder="Username"
+            placeholder="name"
             value={this.state.name}
             onChange={this.handleInputChange}
           />
