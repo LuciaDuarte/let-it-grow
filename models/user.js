@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  passwordHash: {
+  passwordHashAndSalt: {
     type: String
   }
 });

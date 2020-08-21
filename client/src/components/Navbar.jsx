@@ -1,11 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Navbar() {
+function Navbar(props) {
   return (
     <nav>
-      <Link to="/authentication/sign-in">Sign-In</Link>
-      <Link to="/authentication/sign-up">Sign-Up</Link>
+      {(props.user && (
+        <>
+          <span>{props.user.name}</span>
+          <button onClick={props.onSignOut}>Sign Out</button>
+        </>
+      )) || (
+        <>
+          <Link to="/authentication/sign-up">Sign Up</Link>
+          <Link to="/authentication/sign-in">Sign In</Link>
+        </>
+      )}
     </nav>
   );
 }

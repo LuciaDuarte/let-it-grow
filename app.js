@@ -8,17 +8,26 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const passport = require('passport');
+
 const serveFavicon = require('serve-favicon');
-const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js');
-const passportConfigure = require('./passport-configuration.js');
+
+const deserializeUser = require('./middleware/deserialize-user');
+const cors = require('cors');
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(serveFavicon(join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(
+  cors({
+    origin: [process.env.CLIENT_APP_URL],
+    credentials: true
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -38,9 +47,7 @@ app.use(
     })
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(bindUserToViewLocals);
+app.use(deserializeUser);
 
 app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
