@@ -34,6 +34,5 @@ export const searchPlants = async query => {
       query
     }
   });
-
-  console.log('response', response.data);
+  return response.data;
 };
