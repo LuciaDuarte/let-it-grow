@@ -5,7 +5,8 @@ class NewPlant extends Component {
   constructor() {
     super();
     this.state = {
-      search: ''
+      search: '',
+      loaded:false
     };
   }
 
@@ -15,7 +16,10 @@ class NewPlant extends Component {
     const query = this.state.search;
     searchPlants(query)
       .then(data => {
-        console.log(data);
+        this.setState({
+          search: data.data,
+          loaded:true
+        })
       })
       .catch(error => {
         console.log(error);
@@ -47,6 +51,9 @@ class NewPlant extends Component {
           />
           <button>Add</button>
         </form>
+        {this.state.loaded && this.state.search.map(item => {
+          return <h1>{item.common_name}</h1>
+        } )} 
       </div>
     );
   }
