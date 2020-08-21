@@ -6,7 +6,7 @@ class NewPlant extends Component {
     super();
     this.state = {
       search: '',
-      loaded:false
+      loaded: false
     };
   }
 
@@ -18,8 +18,8 @@ class NewPlant extends Component {
       .then(data => {
         this.setState({
           search: data.data,
-          loaded:true
-        })
+          loaded: true
+        });
       })
       .catch(error => {
         console.log(error);
@@ -51,9 +51,15 @@ class NewPlant extends Component {
           />
           <button>Add</button>
         </form>
-        {this.state.loaded && this.state.search.map(item => {
-          return <h1>{item.common_name}</h1>
-        } )} 
+        {this.state.loaded &&
+          this.state.search.map(item => {
+            return (
+              <div>
+                <h1>{item.common_name}</h1>
+                <span>{item.links.self}</span>;
+              </div>
+            );
+          })}
       </div>
     );
   }
