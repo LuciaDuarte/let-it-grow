@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { searchPlants } from './../../services/trefle';
+import { Link } from 'react-router-dom';
 
 class NewPlant extends Component {
   constructor() {
     super();
     this.state = {
+      loaded: false,
       search: '',
-      loaded: false
+      results: {},
+      error: null
     };
   }
 
@@ -17,7 +20,7 @@ class NewPlant extends Component {
     searchPlants(query)
       .then(data => {
         this.setState({
-          search: data.data,
+          results: data.data,
           loaded: true
         });
       })
@@ -52,11 +55,13 @@ class NewPlant extends Component {
           <button>Add</button>
         </form>
         {this.state.loaded &&
-          this.state.search.map(item => {
+          this.state.results.map(item => {
             return (
-              <div>
-                <h1>{item.common_name}</h1>
-                <span>{item.links.self}</span>;
+              <div key={item.id}>
+                <Link to={`/plants/search/${item.slug}`}>
+                  <h1>{item.common_name}</h1>
+                </Link>
+                <span>{item.links.self}</span>
               </div>
             );
           })}

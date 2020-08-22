@@ -92,8 +92,8 @@ class App extends Component {
           <Route path="/plants" component={Plants} exact />
           <Route path="/plants/new" component={NewPlant} exact />
           <Route path="/plants/:plantId" component={SinglePlant} exact />
-          <Route path="/search" component={Search} exact />
-          <Route path="/search/:id" component={SearchedPlant} exact />
+          {/* <Route path="/search" component={Search} exact /> */}
+          <Route path="/plants/search/:id" component={SearchedPlant} exact />
           <Route path="/tasks" component={Tasks} exact />
         </Switch>
       </div>

@@ -13,3 +13,12 @@ export const searchPlants = async query => {
   });
   return response.data;
 };
+
+export const loadPlant = async slug => {
+  const response = await api.get('/single', {
+    params: {
+      slug
+    }
+  });
+  return response.data;
+};
