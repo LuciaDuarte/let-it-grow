@@ -15,10 +15,13 @@ const mongoose = require('mongoose');
 const serveFavicon = require('serve-favicon');
 
 const deserializeUser = require('./middleware/deserialize-user');
+const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js');
+
 const cors = require('cors');
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 const trefleRouter = require('./routes/trefle');
+const gardenRouter = require('./routes/garden');
 
 const app = express();
 
@@ -52,10 +55,12 @@ app.use(
   })
 );
 app.use(deserializeUser);
+app.use(bindUserToViewLocals);
 
 app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
 app.use('/search', trefleRouter);
+app.use('/garden', gardenRouter);
 
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => {

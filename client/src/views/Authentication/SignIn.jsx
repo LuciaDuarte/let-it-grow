@@ -29,10 +29,10 @@ class SignIn extends Component {
       })
       .catch(error => {
         console.log(error);
-        const serverError = error.response.data.error;
-        this.setState({
-          error: serverError
-        });
+        // const serverError = error;
+        // this.setState({
+        //   error: serverError
+        // });
       });
   };
 

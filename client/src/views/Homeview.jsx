@@ -1,12 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Homeview = props => {
+const Homeview = ({ user }) => {
   return (
     <div>
       <h1>Let It Grow 🌱</h1>
-      {props.user && (
+      {user && (
         <>
-          <h2>Welcome, {props.user.name}</h2>
+          <h2>Welcome, {user.name}</h2>
+          <Link to="/gardens">My gardens</Link>
         </>
       )}
     </div>

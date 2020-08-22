@@ -64,7 +64,7 @@ class App extends Component {
         <Switch>
           <ProtectedRoute
             path="/"
-            render={props => <Homeview {...props} user={this.state.user} />}
+            render={props => <Homeview user={this.state.user} />}
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
@@ -86,7 +86,14 @@ class App extends Component {
             redirect="/"
           />
           <Route path="/profile" component={Profile} exact />
-          <Route path="/gardens" component={Gardens} exact />
+          <ProtectedRoute
+            path="/gardens"
+            render={props => <Gardens user={this.state.user} />}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
           <Route path="/gardens/new" component={NewGarden} exact />
           <Route path="/gardens/:gardenId" component={SingleGarden} />
           <Route path="/plants" component={Plants} exact />
