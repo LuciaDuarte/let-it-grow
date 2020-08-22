@@ -60,8 +60,8 @@ class NewPlant extends Component {
               <div key={item.id}>
                 <Link to={`/plants/search/${item.slug}`}>
                   <h1>{item.common_name}</h1>
+                  <img src={item.image_url} alt=""/>
                 </Link>
-                <span>{item.links.self}</span>
               </div>
             );
           })}
