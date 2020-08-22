@@ -14,7 +14,10 @@ class Gardens extends Component {
 
   componentDidMount() {
     const user = this.props.user._id;
+    this.load(user);
+  }
 
+  load(user) {
     loadGardens(user)
       .then(data => {
         const gardens = data.data;
@@ -46,6 +49,7 @@ class Gardens extends Component {
         this.setState({
           name: ''
         });
+        this.load(owner);
       })
       .catch(error => {
         console.log(error);
