@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { searchPlants } from './../../services/trefle';
+import { searchPlantsFromAPI } from './../../services/trefle';
 import { Link } from 'react-router-dom';
 
 class NewPlant extends Component {
@@ -17,7 +17,7 @@ class NewPlant extends Component {
     event.preventDefault();
 
     const query = this.state.search;
-    searchPlants(query)
+    searchPlantsFromAPI(query)
       .then(data => {
         this.setState({
           results: data.data,
@@ -54,13 +54,20 @@ class NewPlant extends Component {
           />
           <button>Add</button>
         </form>
+        {/* {this.state.loaded && (
+          <>
+            <h1>{this.state.results.name}</h1>
+            <p>Description: {}</p>
+          </>
+        )} */}
         {this.state.loaded &&
           this.state.results.map(item => {
             return (
               <div key={item.id}>
-                <Link to={`/plants/search/${item.slug}`}>
-                  <h1>{item.common_name}</h1>
-                  <img src={item.image_url} alt=""/>
+                <Link to={`/plants/search/${item.attributes.slug}`}>
+                  <h1>{item.attributes.name}</h1>
+                  <img src={item.attributes.main_image_path} alt="" />
+                  <img src={item.image_url} alt="" />
                 </Link>
               </div>
             );

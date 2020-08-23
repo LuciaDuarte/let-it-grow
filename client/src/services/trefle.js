@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: `${baseUrl}/search`
 });
 
-export const searchPlants = async query => {
+export const searchPlantsFromAPI = async query => {
   const response = await api.get('/list', {
     params: {
       query
@@ -14,7 +14,7 @@ export const searchPlants = async query => {
   return response.data;
 };
 
-export const loadPlant = async slug => {
+export const loadPlantFromAPI = async slug => {
   const response = await api.get('/single', {
     params: {
       slug
@@ -22,3 +22,20 @@ export const loadPlant = async slug => {
   });
   return response.data;
 };
+// export const searchPlantsFromAPI = async query => {
+//   const response = await api.get('/list', {
+//     params: {
+//       query
+//     }
+//   });
+//   return response.data;
+// };
+
+// export const loadPlantFromAPI = async slug => {
+//   const response = await api.get('/single', {
+//     params: {
+//       slug
+//     }
+//   });
+//   return response.data;
+// };

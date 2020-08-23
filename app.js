@@ -22,6 +22,7 @@ const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 const trefleRouter = require('./routes/trefle');
 const gardenRouter = require('./routes/garden');
+const plantsRouter = require('./routes/plants');
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
 app.use('/search', trefleRouter);
 app.use('/garden', gardenRouter);
+app.use('/plants', plantsRouter);
 
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => {

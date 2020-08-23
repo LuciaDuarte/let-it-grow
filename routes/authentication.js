@@ -9,7 +9,6 @@ const authenticationRouter = new Router();
 
 authenticationRouter.post('/sign-up', (req, res, next) => {
   const { name, email, password } = req.body;
-  if (password.length < 8) throw new Error('Password is too short.');
   bcryptjs
     .hash(password, 10)
     .then(hash => {
