@@ -126,26 +126,32 @@ class SinglePlant extends Component {
         </div>
         {this.state.loaded && (
           <>
-            <h1>{this.state.plant.nickname}</h1>
-            <p>
+           {this.state.plant.nickname &&  <h1>{this.state.plant.nickname}</h1>}
+            {plantInfo.attributes.name &&  <p><strong>Common name:</strong>
               {' '}
-              <strong>Common name:</strong> {plantInfo.attributes.name}
-            </p>
-            <img src={plantInfo.attributes.main_image_path} alt="" />
-            <p>
-              <strong>Scientific name:</strong>{' '}
+              {plantInfo.attributes.name}
+              </p>}
+
+            <img src={plantInfo.attributes.main_image_path.includes("/assets") ? "https://tinyurl.com/y6tmad6q" : plantInfo.attributes.main_image_path } style={{ width: '20em' }} /> 
+
+            {plantInfo.attributes.binomial_name && <p>
+              <strong>Scientific name:</strong>
+              {' '}
               {plantInfo.attributes.binomial_name}
-            </p>
-            <p>
-              <strong>Description: </strong> {plantInfo.attributes.description}
-            </p>
+            </p>}
+
+            {plantInfo.attributes.description && <p><strong>Description:</strong> {plantInfo.attributes.description}</p>}
+
+            {plantInfo.attributes.sun_requirements && 
             <p>
               <strong>Sun Requirements:</strong>{' '}
               {plantInfo.attributes.sun_requirements}
-            </p>
+            </p>}
+
+            {plantInfo.attributes.sowing_method && 
             <p>
               <strong>How to sow:</strong> {plantInfo.attributes.sowing_method}
-            </p>
+            </p>}
           </>
         )}
       </div>
