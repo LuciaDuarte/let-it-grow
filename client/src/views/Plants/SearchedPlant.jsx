@@ -37,7 +37,7 @@ class SearchedPlant extends Component {
              {plant.attributes.description && <h1>General Information</h1>}
             {plant.attributes.description && <p>{plant.attributes.description}</p>}
              <br></br>
-            {plant.attributes.common_names[0] && <p><strong>Common names:</strong> {plant.attributes.common_names[0]},{plant.attributes.common_names[1]}</p>}
+            {plant.attributes.common_names && <p><strong>Common names:</strong> {plant.attributes.common_names[0]},{plant.attributes.common_names[1]}</p>}
             {plant.attributes.binomial_name && <p><strong>Scientific name:</strong> {plant.attributes.binomial_name}</p>}
 
             <div className="growinginfo">

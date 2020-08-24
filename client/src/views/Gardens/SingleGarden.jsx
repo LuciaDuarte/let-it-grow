@@ -119,11 +119,13 @@ class SingleGarden extends Component {
             this.state.results.map(item => {
               return (
                 <div key={item.id}>
-                  <img
+                  {/* <img
                     src={item.attributes.main_image_path}
                     alt=""
                     style={{ width: '5em' }}
-                  />
+                  /> */}
+             <img src={item.attributes.main_image_path.includes("/assets") ? "https://tinyurl.com/y6tmad6q" : item.attributes.main_image_path } style={{ width: '5em' }} /> 
+
                   <Link to={`/plants/search/${item.id}`}>
                     <label htmlFor={`input-${item.id}`}>
                       {item.attributes.name}
