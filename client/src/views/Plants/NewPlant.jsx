@@ -64,7 +64,7 @@ class NewPlant extends Component {
           this.state.results.map(item => {
             return (
               <div key={item.id}>
-                <Link to={`/plants/search/${item.attributes.slug}`}>
+                <Link to={`/plants/search/${item.id}`}>
                   <h1>{item.attributes.name}</h1>
                   <img src={item.attributes.main_image_path} alt="" />
                   <img src={item.image_url} alt="" />
