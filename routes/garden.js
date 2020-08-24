@@ -3,15 +3,19 @@
 const { Router } = require('express');
 const Garden = require('./../models/garden');
 
+
 const gardenRouter = new Router();
+
+
+
 
 gardenRouter.post('/new', (req, res, next) => {
   const { name, owner } = req.body;
-
+  
   Garden.create({
     name,
     owner
-  })
+  }) 
     .then(data => {
       console.log(data);
       res.json({ data });
@@ -19,6 +23,7 @@ gardenRouter.post('/new', (req, res, next) => {
     .catch(error => {
       next(error);
     });
+    
 });
 
 gardenRouter.get('/list', (req, res, next) => {

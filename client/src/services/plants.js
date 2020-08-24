@@ -5,8 +5,15 @@ const api = axios.create({
   withCredentials: true
 });
 
-export const createPlant = body =>
+export const createPlant = body => {
+  const formBody = new window.FormData();
+  // formBody.append(‘content’, body.content);
+  formBody.append('image', body.image);
+  for (let property in body) formBody.append(property, body[property]);
   api.post('/new', body).then(response => response.data);
+};
+
+ 
 
 export const loadPlants = garden =>
   api

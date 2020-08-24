@@ -2,16 +2,29 @@
 
 const { Router } = require('express');
 const Plant = require('./../models/plant');
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const multerStorageCloudinary = require('multer-storage-cloudinary');
 
 const plantsRouter = new Router();
 
-plantsRouter.post('/new', (req, res, next) => {
-  const { apiId, garden, nickname } = req.body;
+const storage = new multerStorageCloudinary.CloudinaryStorage({
+  cloudinary: cloudinary.v2
+});
+const upload = multer({ storage });
 
+plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
+  const { apiId, garden, nickname } = req.body;
+  let url;
+  if (req.file) {
+    url = req.file.path;
+  }
+  console.log(url);
   Plant.create({
     apiId,
     garden,
-    nickname
+    nickname,
+    image: url
   })
     .then(data => {
       console.log(data);

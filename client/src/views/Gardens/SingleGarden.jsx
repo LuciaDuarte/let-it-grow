@@ -37,6 +37,13 @@ class SingleGarden extends Component {
       });
   }
 
+  handleImageChange = event => {
+    const image = event.target.files[0];
+    this.setState({
+       image
+    });
+  }
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -46,15 +53,17 @@ class SingleGarden extends Component {
 
   handleFormSubmission = event => {
     event.preventDefault();
-    const { apiId, nickname, image } = this.state;
+    const { apiId, nickname } = this.state;
     const garden = this.props.match.params.gardenId;
+    const image = this.state.image;
     const body = { apiId, garden, nickname, image };
     createPlant(body)
       .then(data => {
         console.log(data);
         this.setState({
           name: '',
-          nickname: ''
+          nickname: '',
+          image:''
         });
         this.load(garden);
       })
@@ -158,8 +167,7 @@ class SingleGarden extends Component {
             id="input-file"
             name="image"
             placeholder="Plant Image"
-            value={this.state.image}
-            onChange={this.handleInputChange}
+            onChange={this.handleImageChange}
           />
           <button>Create</button>
         </form>
