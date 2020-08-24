@@ -16,6 +16,7 @@ class SingleGarden extends Component {
       search: '',
       results: {}
     };
+    //console.log(createPlant)
   }
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class SingleGarden extends Component {
     const image = this.state.image;
     const body = { apiId, garden, nickname, image };
     createPlant(body)
-      .then(data => {
+    .then(data => {
         console.log(data);
         this.setState({
           name: '',

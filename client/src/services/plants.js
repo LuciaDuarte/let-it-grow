@@ -6,11 +6,17 @@ const api = axios.create({
 });
 
 export const createPlant = body => {
+
   const formBody = new window.FormData();
   // formBody.append(‘content’, body.content);
-  formBody.append('image', body.image);
+  // formBody.append('image', body.image);
   for (let property in body) formBody.append(property, body[property]);
-  api.post('/new', body).then(response => response.data);
+  for (var pair of formBody.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+  }
+  return api.post('/new', body).then(response => {
+    return response.data
+  });
 };
 
  

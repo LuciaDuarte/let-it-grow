@@ -14,12 +14,14 @@ const storage = new multerStorageCloudinary.CloudinaryStorage({
 const upload = multer({ storage });
 
 plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
+  console.log('body',req.body)
   const { apiId, garden, nickname } = req.body;
+  //console.log('running');
+  console.log(req.file);
   let url;
   if (req.file) {
     url = req.file.path;
   }
-  console.log(url);
   Plant.create({
     apiId,
     garden,
@@ -27,7 +29,7 @@ plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
     image: url
   })
     .then(data => {
-      console.log(data);
+      console.log('this is data',data);
       res.json({ data });
     })
     .catch(error => {
