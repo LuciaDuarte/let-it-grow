@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { loadSinglePlant } from './../../services/plants';
+import { loadSinglePlant, deletePlant } from './../../services/plants';
 import { loadPlantFromAPI } from './../../services/trefle';
 import { createTask, loadTasks } from './../../services/tasks';
 
@@ -13,7 +13,8 @@ class SinglePlant extends Component {
       task: '',
       date: null,
       loadedTasks: false,
-      taskList: null
+      taskList: null,
+      loadedPlant: false
     };
   }
 
@@ -23,7 +24,8 @@ class SinglePlant extends Component {
       .then(data => {
         const plant = data.data;
         this.setState({
-          plant: plant
+          plant: plant,
+          loadedPlant: true
         });
         this.load();
       })
@@ -31,6 +33,19 @@ class SinglePlant extends Component {
         console.log(error);
       });
   }
+
+  handlePlantDeletion = event => {
+    event.preventDefault();
+    const id = this.props.match.params.plantId;
+
+    deletePlant(id)
+      .then(() => {
+        this.props.history.push('/');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   load() {
     const apiId = this.state.plant.apiId;
@@ -124,9 +139,14 @@ class SinglePlant extends Component {
               );
             })}
         </div>
-        {this.state.loaded && (
-          <>
-           {this.state.plant.nickname &&  <h1>{this.state.plant.nickname}</h1>}
+        {this.state.loadedPlant && (
+          <> 
+          <h1>{this.state.plant.nickname}</h1>
+           <form onSubmit={this.handlePlantDeletion}>
+           <button>Delete Plant</button>
+         </form>
+         {this.state.loaded && 
+         <div>
             {plantInfo.attributes.name &&  <p><strong>Common name:</strong>
               {' '}
               {plantInfo.attributes.name}
@@ -152,7 +172,9 @@ class SinglePlant extends Component {
             <p>
               <strong>How to sow:</strong> {plantInfo.attributes.sowing_method}
             </p>}
-          </>
+            </div>}
+            </>
+          
         )}
       </div>
     );

@@ -1,6 +1,6 @@
 'use strict';
 
-const { Router } = require('express');
+const { Router, request } = require('express');
 const Plant = require('./../models/plant');
 const multer = require('multer');
 const cloudinary = require('cloudinary');
@@ -55,8 +55,20 @@ plantsRouter.get('/single', (req, res, next) => {
 
   Plant.findById(id)
     .then(data => {
-      console.log(data);
       res.json({ data });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+plantsRouter.post('/delete/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log(id);
+
+  Plant.findByIdAndDelete(id)
+    .then(() => {
+      res.json({});
     })
     .catch(error => {
       next(error);

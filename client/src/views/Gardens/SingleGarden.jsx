@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createPlant, loadPlants } from './../../services/plants';
+import { createPlant, loadPlants} from './../../services/plants';
 import { Link } from 'react-router-dom';
 import { searchPlantsFromAPI } from './../../services/trefle';
 
@@ -23,6 +23,8 @@ class SingleGarden extends Component {
     const garden = this.props.match.params.gardenId;
     this.load(garden);
   }
+  
+ 
 
   load(garden) {
     loadPlants(garden)

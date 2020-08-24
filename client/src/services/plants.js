@@ -14,7 +14,7 @@ export const createPlant = body => {
   for (var pair of formBody.entries()) {
     console.log(pair[0]+ ', ' + pair[1]); 
   }
-  return api.post('/new', body).then(response => {
+  return api.post('/new', formBody).then(response => {
     return response.data
   });
 };
@@ -29,6 +29,9 @@ export const loadPlants = garden =>
       }
     })
     .then(response => response.data);
+
+export const deletePlant = id => api.post(`/delete/${id}`, id).then(response => response.data);
+
 
 export const loadSinglePlant = id =>
   api
