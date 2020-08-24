@@ -68,7 +68,6 @@ class NewPlant extends Component {
                   <h1>{item.attributes.name}</h1>
                    <img src={item.attributes.main_image_path} alt="" />
                    <img src={item.attributes.main_image_path.includes("/assets") ? "https://tinyurl.com/y6tmad6q" : item.image_url } /> 
-                   {/* <img src={article.urlToImage != 'null'? article.urlToImage : 'replacement' } class="img-fluid" /> */}
                 </Link>
               </div>
             );
