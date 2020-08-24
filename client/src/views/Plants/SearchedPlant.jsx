@@ -32,7 +32,13 @@ class SearchedPlant extends Component {
         {this.state.loaded && (
           <>
             <div className="generalinfo">
-              
+              scientific name: {plant.attributes.binomial_name}
+              common names: {plant.attributes.common_names}
+              description: {plant.attributes.description}
+              sun requirements: {plant.attributes.sun_requirements}
+              sowing method: {plant.attributes.sowing_method}
+              spread:
+              row spacing:
             </div>
 
             {/* <div className="soilinfo">
@@ -63,7 +69,6 @@ class SearchedPlant extends Component {
               )}
             </div> */}
 
-            
           </>
         )}
       </div>
