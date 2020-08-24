@@ -30,43 +30,25 @@ class SearchedPlant extends Component {
       <div>
         {this.state.loaded && (
           <>
+          {plant.attributes.name &&
+            <h1>{plant.attributes.name}</h1>}
             <div className="generalinfo">
-              scientific name: {plant.attributes.binomial_name}
-              common names: {plant.attributes.common_names}
-              description: {plant.attributes.description}
-              sun requirements: {plant.attributes.sun_requirements}
-              sowing method: {plant.attributes.sowing_method}
-              spread:
-              row spacing:
-            </div>
+             <img src={plant.attributes.main_image_path} alt=""/>
+             {plant.attributes.description && <h1>General Information</h1>}
+            {plant.attributes.description && <p>{plant.attributes.description}</p>}
+             <br></br>
+            {plant.attributes.common_names[0] && <p><strong>Common names:</strong> {plant.attributes.common_names[0]},{plant.attributes.common_names[1]}</p>}
+            {plant.attributes.binomial_name && <p><strong>Scientific name:</strong> {plant.attributes.binomial_name}</p>}
 
-            {/* <div className="soilinfo">
-              {plant.growth.soil_humidity && <h1>Soil</h1>}
-              {plant.growth.soil_nutriments && (
-                <p>
-                  <strong>Soil Nutriments: </strong>
-                  {plant.growth.soil_nutriments} / 10
-                </p>
-              )}
-              {plant.growth.soil_salinity && (
-                <p>
-                  <strong>Soil Salinity: </strong>
-                  {plant.growth.soil_salinity} / 10
-                </p>
-              )}
-              {plant.growth.soil_texture && (
-                <p>
-                  <strong>Soil Texture: </strong>
-                  {plant.growth.soil_texture} / 10
-                </p>
-              )}
-              {plant.growth.soil_humidity && (
-                <p>
-                  <strong>Soil Humidty: </strong>
-                  {plant.growth.soil_humidity} / 10
-                </p>
-              )}
-            </div> */}
+            <div className="growinginfo">
+            {plant.attributes.sun_requirements &&  <h1>Growing Specifics</h1>}
+            {plant.attributes.sun_requirements && <p><strong>Sun requirements:</strong> {plant.attributes.sun_requirements}</p>}
+            {plant.attributes.sowing_method &&  <p><strong>Sowing method:</strong> {plant.attributes.sowing_method}</p> }
+          {plant.spread &&   <p><strong>Spread:</strong>{plant.spread}</p> }
+           {plant.attributes.row_spacing && <p><strong>Row spacing:</strong>{plant.attributes.row_spacing}</p>}
+           {plant.attributes.height && <p><strong>Plant height:</strong>{plant.attributes.height}</p>}
+            </div>  
+            </div>
 
           </>
         )}
