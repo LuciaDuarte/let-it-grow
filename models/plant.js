@@ -8,9 +8,8 @@ const schema = new mongoose.Schema({
     ref: 'Garden'
   },
   nickname: String,
-  name: {
-    type: String,
-    trim: true
+  apiId: {
+    type: String
   },
   // description: String,
   // optimal_sun: String,

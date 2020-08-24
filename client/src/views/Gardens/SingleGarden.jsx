@@ -11,7 +11,7 @@ class SingleGarden extends Component {
       loadedResults: false,
       plants: null,
       nickname: '',
-      name: '',
+      apiId: '',
       image: '',
       search: '',
       results: {}
@@ -46,9 +46,9 @@ class SingleGarden extends Component {
 
   handleFormSubmission = event => {
     event.preventDefault();
-    const { name, nickname, image } = this.state;
+    const { apiId, nickname, image } = this.state;
     const garden = this.props.match.params.gardenId;
-    const body = { name, garden, nickname, image };
+    const body = { apiId, garden, nickname, image };
     createPlant(body)
       .then(data => {
         console.log(data);
@@ -93,7 +93,7 @@ class SingleGarden extends Component {
               return (
                 <div key={item._id}>
                   <Link to={`/plants/${item._id}`}>
-                    <h3>{item.name}</h3>
+                    <h3>{item.nickname}</h3>
                   </Link>
                 </div>
               );
@@ -119,16 +119,21 @@ class SingleGarden extends Component {
             this.state.results.map(item => {
               return (
                 <div key={item.id}>
-                  <Link to={`/plants/search/${item.slug}`}>
-                    <label htmlFor={`input-${item.slug}`}>
-                      {item.common_name}
+                  <img
+                    src={item.attributes.main_image_path}
+                    alt=""
+                    style={{ width: '5em' }}
+                  />
+                  <Link to={`/plants/search/${item.id}`}>
+                    <label htmlFor={`input-${item.id}`}>
+                      {item.attributes.name}
                     </label>
                   </Link>
                   <input
                     type="checkbox"
-                    id={`input-${item.slug}`}
-                    name="name"
-                    value={item.slug}
+                    id={`input-${item.id}`}
+                    name="apiId"
+                    value={item.id}
                     onChange={this.handleInputChange}
                   />
                 </div>

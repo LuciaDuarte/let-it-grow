@@ -6,10 +6,10 @@ const Plant = require('./../models/plant');
 const plantsRouter = new Router();
 
 plantsRouter.post('/new', (req, res, next) => {
-  const { name, garden, nickname } = req.body;
+  const { apiId, garden, nickname } = req.body;
 
   Plant.create({
-    name,
+    apiId,
     garden,
     nickname
   })

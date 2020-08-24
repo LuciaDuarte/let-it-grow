@@ -18,8 +18,7 @@ class SinglePlant extends Component {
       .then(data => {
         const plant = data.data;
         this.setState({
-          plant: plant,
-          loaded: true
+          plant: plant
         });
         this.load();
       })
@@ -29,11 +28,12 @@ class SinglePlant extends Component {
   }
 
   load() {
-    const slug = this.state.plant.name;
-    loadPlantFromAPI(slug)
+    const apiId = this.state.plant.apiId;
+    loadPlantFromAPI(apiId)
       .then(data => {
         this.setState({
-          plantInfo: data.data
+          plantInfo: data.data,
+          loaded: true
         });
       })
       .then(error => {
@@ -48,8 +48,8 @@ class SinglePlant extends Component {
         {this.state.loaded && (
           <>
             <h1>{this.state.plant.nickname}</h1>
-            <p>Common name: {this.state.plantInfo.common_name}</p>
-            <p>Scientific name: {this.state.plantInfo.scientific_name}</p>
+            <p>Common name: {this.state.plantInfo.attributes.name}</p>
+            {/* <p>Scientific name: {this.state.plantInfo.scientific_name}</p> */}
           </>
         )}
       </div>

@@ -14,10 +14,10 @@ export const searchPlantsFromAPI = async query => {
   return response.data;
 };
 
-export const loadPlantFromAPI = async slug => {
+export const loadPlantFromAPI = async apiId => {
   const response = await api.get('/single', {
     params: {
-      slug
+      apiId
     }
   });
   return response.data;

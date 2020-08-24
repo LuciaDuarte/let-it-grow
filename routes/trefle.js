@@ -22,8 +22,8 @@ trefleRouter.get('/list', async (req, res, next) => {
 // });
 
 trefleRouter.get('/single', async (req, res, next) => {
-  const { slug } = req.query;
-  const response = await axios.get(`${baseUrl}/?filter=${slug}`);
+  const { apiId } = req.query;
+  const response = await axios.get(`${baseUrl}/${apiId}`);
   res.json(response.data);
 });
 
