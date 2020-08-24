@@ -11,11 +11,11 @@ class SearchedPlant extends Component {
   }
 
   componentDidMount() {
-    const slug = this.props.match.params.id;
-    loadPlantFromAPI(slug)
+    const apiId = this.props.match.params.id;
+    loadPlantFromAPI(apiId)
       .then(data => {
         this.setState({
-          plant: data,
+          plant: data.data,
           loaded: true
         });
       })
@@ -28,7 +28,6 @@ class SearchedPlant extends Component {
     const plant = this.state.plant;
     return (
       <div>
-        <h1>{plant.attributes.name}</h1>
         {this.state.loaded && (
           <>
             <div className="generalinfo">
