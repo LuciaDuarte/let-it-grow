@@ -77,6 +77,7 @@ class SinglePlant extends Component {
           task: '',
           date: ''
         });
+        this.load();
       })
       .catch(error => {
         console.log(error);
@@ -112,6 +113,16 @@ class SinglePlant extends Component {
 
             <button>Add</button>
           </form>
+          {this.state.loadedTasks &&
+            this.state.taskList.map(item => {
+              let date = new Date(item.date);
+              return (
+                <div key={item._id}>
+                  <p>What? {item.task}</p>
+                  <p>When? {date.toDateString()}</p>
+                </div>
+              );
+            })}
         </div>
         {this.state.loaded && (
           <>

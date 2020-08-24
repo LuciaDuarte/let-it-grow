@@ -27,6 +27,7 @@ tasksRouter.get('/list', (req, res, next) => {
   const { id } = req.query;
 
   Task.find({ plant: id })
+    .sort({ date: 1 })
     .then(data => {
       console.log(data);
       res.json({ data });
