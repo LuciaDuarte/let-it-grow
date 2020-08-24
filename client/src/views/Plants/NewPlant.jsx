@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { searchPlantsFromAPI } from './../../services/trefle';
+import { searchPlantsFromAPI } from './../../services/openfarm';
 import { Link } from 'react-router-dom';
 
 class NewPlant extends Component {
@@ -54,20 +54,21 @@ class NewPlant extends Component {
           />
           <button>Add</button>
         </form>
-        {/* {this.state.loaded && (
-          <>
-            <h1>{this.state.results.name}</h1>
-            <p>Description: {}</p>
-          </>
-        )} */}
+
         {this.state.loaded &&
           this.state.results.map(item => {
             return (
               <div key={item.id}>
                 <Link to={`/plants/search/${item.id}`}>
                   <h1>{item.attributes.name}</h1>
-                   <img src={item.attributes.main_image_path} alt="" />
-                   <img src={item.attributes.main_image_path.includes("/assets") ? "https://tinyurl.com/y6tmad6q" : item.image_url } /> 
+                  <img src={item.attributes.main_image_path} alt="" />
+                  <img
+                    src={
+                      item.attributes.main_image_path.includes('/assets')
+                        ? 'https://tinyurl.com/y6tmad6q'
+                        : item.image_url
+                    }
+                  />
                 </Link>
               </div>
             );

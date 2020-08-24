@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { createPlant, loadPlants} from './../../services/plants';
+import { createPlant, loadPlants } from './../../services/plants';
 import { Link } from 'react-router-dom';
-import { searchPlantsFromAPI } from './../../services/trefle';
+import { searchPlantsFromAPI } from './../../services/openfarm';
 
 class SingleGarden extends Component {
   constructor() {
@@ -16,15 +16,12 @@ class SingleGarden extends Component {
       search: '',
       results: {}
     };
-    //console.log(createPlant)
   }
 
   componentDidMount() {
     const garden = this.props.match.params.gardenId;
     this.load(garden);
   }
-  
- 
 
   load(garden) {
     loadPlants(garden)
@@ -35,7 +32,7 @@ class SingleGarden extends Component {
           loaded: true
         });
       })
-      .then(error => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -43,9 +40,9 @@ class SingleGarden extends Component {
   handleImageChange = event => {
     const image = event.target.files[0];
     this.setState({
-       image
+      image
     });
-  }
+  };
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -58,15 +55,17 @@ class SingleGarden extends Component {
     event.preventDefault();
     const { apiId, nickname } = this.state;
     const garden = this.props.match.params.gardenId;
+    const owner = this.props.user._id;
     const image = this.state.image;
-    const body = { apiId, garden, nickname, image };
+    const body = { apiId, nickname, image, owner, garden };
     createPlant(body)
-    .then(data => {
-        console.log(data);
+      .then(data => {
         this.setState({
           name: '',
           nickname: '',
-          image:''
+          image: '',
+          results: '',
+          loadedResults: false
         });
         this.load(garden);
       })
@@ -83,11 +82,12 @@ class SingleGarden extends Component {
       .then(data => {
         this.setState({
           results: data.data,
-          loadedResults: true
+          loadedResults: true,
+          search: ''
         });
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
         // const serverError = error.response.data.error;
         // this.setState({
         //   error: serverError
@@ -98,6 +98,7 @@ class SingleGarden extends Component {
   render() {
     return (
       <div>
+        <Link to="/gardens">Back to all gardens</Link>
         <h1>All Plants</h1>
         {this.state.loaded && (
           <>
@@ -131,12 +132,14 @@ class SingleGarden extends Component {
             this.state.results.map(item => {
               return (
                 <div key={item.id}>
-                  {/* <img
-                    src={item.attributes.main_image_path}
-                    alt=""
+                  <img
+                    src={
+                      item.attributes.main_image_path.includes('/assets')
+                        ? 'https://tinyurl.com/y6tmad6q'
+                        : item.attributes.main_image_path
+                    }
                     style={{ width: '5em' }}
-                  /> */}
-             <img src={item.attributes.main_image_path.includes("/assets") ? "https://tinyurl.com/y6tmad6q" : item.attributes.main_image_path } style={{ width: '5em' }} /> 
+                  />
 
                   <Link to={`/plants/search/${item.id}`}>
                     <label htmlFor={`input-${item.id}`}>
@@ -170,6 +173,7 @@ class SingleGarden extends Component {
             id="input-file"
             name="image"
             placeholder="Plant Image"
+            value={this.state.image}
             onChange={this.handleImageChange}
           />
           <button>Create</button>

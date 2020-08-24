@@ -12,16 +12,15 @@ const expressSession = require('express-session');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-
 const serveFavicon = require('serve-favicon');
 
 const deserializeUser = require('./middleware/deserialize-user');
 const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js');
 
 const cors = require('cors');
-const indexRouter = require('./routes/index');
+
 const authenticationRouter = require('./routes/authentication');
-const trefleRouter = require('./routes/trefle');
+const openFarmRouter = require('./routes/openfarm');
 const gardenRouter = require('./routes/garden');
 const plantsRouter = require('./routes/plants');
 const tasksRouter = require('./routes/tasks');
@@ -60,9 +59,8 @@ app.use(
 app.use(deserializeUser);
 app.use(bindUserToViewLocals);
 
-app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
-app.use('/search', trefleRouter);
+app.use('/search', openFarmRouter);
 app.use('/garden', gardenRouter);
 app.use('/plants', plantsRouter);
 app.use('/tasks', tasksRouter);

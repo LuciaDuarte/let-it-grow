@@ -22,20 +22,3 @@ export const loadPlantFromAPI = async apiId => {
   });
   return response.data;
 };
-// export const searchPlantsFromAPI = async query => {
-//   const response = await api.get('/list', {
-//     params: {
-//       query
-//     }
-//   });
-//   return response.data;
-// };
-
-// export const loadPlantFromAPI = async slug => {
-//   const response = await api.get('/single', {
-//     params: {
-//       slug
-//     }
-//   });
-//   return response.data;
-// };

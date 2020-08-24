@@ -16,12 +16,3 @@ export const loadTasks = id =>
       }
     })
     .then(response => response.data);
-
-// export const loadSinglePlant = id =>
-//   api
-//     .get('/single', {
-//       params: {
-//         id
-//       }
-//     })
-//     .then(response => response.data);

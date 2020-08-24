@@ -11,6 +11,9 @@ export const signUp = body =>
 export const signIn = body =>
   api.post('/sign-in', body).then(response => response.data);
 
+export const editProfile = body =>
+  api.post('/edit', body).then(response => response.data);
+
 export const signOut = () =>
   api.post('/sign-out').then(response => response.data);
 

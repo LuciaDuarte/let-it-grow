@@ -9,6 +9,7 @@ const Homeview = ({ user }) => {
         <>
           <h2>Welcome, {user.name}</h2>
           <Link to="/gardens">My gardens</Link>
+          <Link to="/search">Search for a plant</Link>
         </>
       )}
     </div>

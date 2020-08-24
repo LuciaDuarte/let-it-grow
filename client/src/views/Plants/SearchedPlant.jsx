@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { loadPlantFromAPI } from './../../services/trefle';
+import { loadPlantFromAPI } from './../../services/openfarm';
+import { Link } from 'react-router-dom';
 
 class SearchedPlant extends Component {
   constructor() {
@@ -19,7 +20,7 @@ class SearchedPlant extends Component {
           loaded: true
         });
       })
-      .then(error => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -28,28 +29,74 @@ class SearchedPlant extends Component {
     const plant = this.state.plant;
     return (
       <div>
+        <Link to={`/search`}>Go back to search</Link>
         {this.state.loaded && (
           <>
-          {plant.attributes.name &&
-            <h1>{plant.attributes.name}</h1>}
+            {plant.attributes.name && <h1>{plant.attributes.name}</h1>}
             <div className="generalinfo">
-             <img src={plant.attributes.main_image_path} alt=""/>
-             {plant.attributes.description && <h1>General Information</h1>}
-            {plant.attributes.description && <p>{plant.attributes.description}</p>}
-             <br></br>
-            {plant.attributes.common_names && <p><strong>Common names:</strong> {plant.attributes.common_names[0]},{plant.attributes.common_names[1]}</p>}
-            {plant.attributes.binomial_name && <p><strong>Scientific name:</strong> {plant.attributes.binomial_name}</p>}
+              <img
+                src={
+                  plant.attributes.main_image_path.includes('/assets')
+                    ? 'https://tinyurl.com/y6tmad6q'
+                    : plant.attributes.main_image_path
+                }
+                alt={plant.attributes.name}
+              />
+              {plant.attributes.description && <h1>General Information</h1>}
+              {plant.attributes.description && (
+                <p>{plant.attributes.description}</p>
+              )}
+              <br></br>
+              {plant.attributes.common_names && (
+                <p>
+                  <strong>Common names:</strong>{' '}
+                  {plant.attributes.common_names[0]},
+                  {plant.attributes.common_names[1]}
+                </p>
+              )}
+              {plant.attributes.binomial_name && (
+                <p>
+                  <strong>Scientific name:</strong>{' '}
+                  {plant.attributes.binomial_name}
+                </p>
+              )}
 
-            <div className="growinginfo">
-            {plant.attributes.sun_requirements &&  <h1>Growing Specifics</h1>}
-            {plant.attributes.sun_requirements && <p><strong>Sun requirements:</strong> {plant.attributes.sun_requirements}</p>}
-            {plant.attributes.sowing_method &&  <p><strong>Sowing method:</strong> {plant.attributes.sowing_method}</p> }
-          {plant.spread &&   <p><strong>Spread:</strong>{plant.spread}</p> }
-           {plant.attributes.row_spacing && <p><strong>Row spacing:</strong>{plant.attributes.row_spacing}</p>}
-           {plant.attributes.height && <p><strong>Plant height:</strong>{plant.attributes.height}</p>}
-            </div>  
+              <div className="growinginfo">
+                {plant.attributes.sun_requirements && (
+                  <h1>Growing Specifics</h1>
+                )}
+                {plant.attributes.sun_requirements && (
+                  <p>
+                    <strong>Sun requirements:</strong>{' '}
+                    {plant.attributes.sun_requirements}
+                  </p>
+                )}
+                {plant.attributes.sowing_method && (
+                  <p>
+                    <strong>Sowing method:</strong>{' '}
+                    {plant.attributes.sowing_method}
+                  </p>
+                )}
+                {plant.spread && (
+                  <p>
+                    <strong>Spread:</strong>
+                    {plant.spread}
+                  </p>
+                )}
+                {plant.attributes.row_spacing && (
+                  <p>
+                    <strong>Row spacing:</strong>
+                    {plant.attributes.row_spacing}
+                  </p>
+                )}
+                {plant.attributes.height && (
+                  <p>
+                    <strong>Plant height:</strong>
+                    {plant.attributes.height}
+                  </p>
+                )}
+              </div>
             </div>
-
           </>
         )}
       </div>

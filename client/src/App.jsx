@@ -8,10 +8,10 @@ import SignIn from './views/Authentication/SignIn';
 import SignUp from './views/Authentication/SignUp';
 import Profile from './views/Profile';
 import Gardens from './views/Gardens/Gardens';
-import NewGarden from './views/Gardens/NewGarden';
+// import NewGarden from './views/Gardens/NewGarden';
 import SingleGarden from './views/Gardens/SingleGarden';
-import Plants from './views/Plants/Plants';
-import NewPlant from './views/Plants/NewPlant';
+// import Plants from './views/Plants/Plants';
+// import NewPlant from './views/Plants/NewPlant';
 import SinglePlant from './views/Plants/SinglePlant';
 import SearchedPlant from './views/Plants/SearchedPlant';
 import Search from './views/Search';
@@ -36,7 +36,7 @@ class App extends Component {
           loaded: true
         });
       })
-      .then(error => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -85,7 +85,19 @@ class App extends Component {
             authorized={!this.state.user}
             redirect="/"
           />
-          <Route path="/profile" component={Profile} exact />
+          <ProtectedRoute
+            path="/profile"
+            render={props => (
+              <Profile
+                user={this.state.user}
+                onUserUpdate={this.handleUserUpdate}
+              />
+            )}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
           <ProtectedRoute
             path="/gardens"
             render={props => <Gardens user={this.state.user} />}
@@ -94,13 +106,19 @@ class App extends Component {
             redirect="/authentication/sign-in"
             exact
           />
-          <Route path="/gardens/new" component={NewGarden} exact />
-          <Route path="/gardens/:gardenId" component={SingleGarden} />
-          <Route path="/plants" component={Plants} exact />
-          <Route path="/plants/new" component={NewPlant} exact />
+          <ProtectedRoute
+            path="/gardens/:gardenId"
+            render={props => <SingleGarden {...props} user={this.state.user} />}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
+          {/* <Route path="/plants" component={Plants} exact /> */}
+          {/* <Route path="/plants/new" component={NewPlant} exact /> */}
           <Route path="/plants/:plantId" component={SinglePlant} exact />
-          {/* <Route path="/search" component={Search} exact /> */}
-          <Route path="/plants/search/:id" component={SearchedPlant} exact />
+          <Route path="/search" component={Search} exact />
+          <Route path="/search/:id" component={SearchedPlant} exact />
           <Route path="/tasks" component={Tasks} exact />
         </Switch>
       </div>

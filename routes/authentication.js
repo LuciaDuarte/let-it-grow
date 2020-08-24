@@ -54,14 +54,27 @@ authenticationRouter.post('/sign-in', (req, res, next) => {
     });
 });
 
+authenticationRouter.post('/edit', (req, res, next) => {
+  const { name, email, id } = req.body;
+  console.log(id);
+  User.findByIdAndUpdate(id, { name, email }, { new: true })
+    .then(user => {
+      console.log(user);
+      res.json({ user: { _id: user._id, name: user.name, email: user.email } });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
 authenticationRouter.post('/sign-out', (req, res, next) => {
   req.session.destroy();
   res.json({});
 });
 
-authenticationRouter.get('/me', (request, response) => {
-  const user = request.user;
-  response.json({
+authenticationRouter.get('/me', (req, res) => {
+  const user = req.user;
+  res.json({
     user: { _id: user._id, name: user.name, email: user.email }
   });
 });

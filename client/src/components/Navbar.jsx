@@ -6,7 +6,11 @@ function Navbar(props) {
     <nav>
       {(props.user && (
         <>
-          <span>{props.user.name}</span>
+          <Link to="/">Homepage</Link>
+          <Link to="/profile">
+            <span>{props.user.name}'s</span>
+            Profile
+          </Link>
           <button onClick={props.onSignOut}>Sign Out</button>
         </>
       )) || (
