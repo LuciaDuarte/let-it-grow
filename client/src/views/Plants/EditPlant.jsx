@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { searchPlantsFromAPI } from './../../services/openfarm';
 import { loadPlantFromAPI } from './../../services/openfarm';
 import { Link } from 'react-router-dom';
-import { loadSinglePlant, deletePlant, editPlant} from './../../services/plants';
-
+import {
+  loadSinglePlant,
+  deletePlant,
+  editPlant
+} from './../../services/plants';
 
 class EditPlant extends Component {
   constructor() {
     super();
     this.state = {
       apiId: '',
-      nickname: '', 
+      nickname: '',
       image: '',
       loaded: false,
       search: '',
@@ -40,7 +43,7 @@ class EditPlant extends Component {
           console.log(error);
         });
     }
-  };
+  }
 
   componentDidMount() {
     const plant = this.props.match.params.plantId;
@@ -65,7 +68,6 @@ class EditPlant extends Component {
     });
   };
 
-
   handleSearchFormSubmission = event => {
     event.preventDefault();
 
@@ -78,12 +80,8 @@ class EditPlant extends Component {
           search: ''
         });
       })
-      .catch(error => {
-      });
+      .catch(error => {});
   };
-
- 
-
 
   handlePlantEditing = event => {
     event.preventDefault();
@@ -123,23 +121,26 @@ class EditPlant extends Component {
 
   render() {
     const plantInfo = this.state.plantInfo;
-    console.log(plantInfo);
     return (
       <div>
         <h1>Edit Plant</h1>
-        {this.state.loadedPlant && (
-          this.state.loaded && 
-          <>
-          <img
-          src={this.state.image ? this.state.image : plantInfo.attributes.main_image_path ? plantInfo.attributes.main_image_path : 'https://tinyurl.com/y6tmad6q'  }
+        {this.state.loadedPlant &&
+          this.state.loaded && (
+            <>
+              <img
+                src={
+                  this.state.image
+                    ? this.state.image
+                    : plantInfo.attributes.main_image_path
+                    ? plantInfo.attributes.main_image_path
+                    : 'https://tinyurl.com/y6tmad6q'
+                }
+                style={{ width: '20em' }}
+              />
 
-          style={{ width: '20em' }}
-        />
-       
-          <h1>{this.state.plant.nickname}</h1>
-          
-              </>
-        )}
+              <h1>{this.state.plant.nickname}</h1>
+            </>
+          )}
 
         <form onSubmit={this.handleSearchFormSubmission}>
           <label htmlFor="input-search">Plant Name</label>
@@ -153,7 +154,7 @@ class EditPlant extends Component {
           />
           <button>Search</button>
         </form>
-      
+
         <form onSubmit={this.handlePlantEditing}>
           {this.state.loadedResults &&
             this.state.results.map(item => {
@@ -207,16 +208,11 @@ class EditPlant extends Component {
           <button>Edit</button>
         </form>
         <form onSubmit={this.handlePlantDeletion}>
-              <button>Delete Plant</button>
-            </form>
-
+          <button>Delete Plant</button>
+        </form>
       </div>
     );
   }
-
-
 }
-
-
 
 export default EditPlant;

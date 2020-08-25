@@ -56,10 +56,8 @@ authenticationRouter.post('/sign-in', (req, res, next) => {
 
 authenticationRouter.post('/edit', (req, res, next) => {
   const { name, email, id } = req.body;
-  console.log(id);
   User.findByIdAndUpdate(id, { name, email }, { new: true })
     .then(user => {
-      console.log(user);
       res.json({ user: { _id: user._id, name: user.name, email: user.email } });
     })
     .catch(error => {

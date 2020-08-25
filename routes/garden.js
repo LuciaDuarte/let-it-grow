@@ -13,7 +13,6 @@ gardenRouter.post('/new', (req, res, next) => {
     owner
   })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
@@ -26,7 +25,6 @@ gardenRouter.get('/list', (req, res, next) => {
 
   Garden.find({ owner: user })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
@@ -39,7 +37,6 @@ gardenRouter.get('/single', (req, res, next) => {
 
   Garden.findById(gardenId)
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {

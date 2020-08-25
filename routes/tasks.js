@@ -16,7 +16,6 @@ tasksRouter.post('/new', (req, res, next) => {
     plant
   })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
@@ -24,13 +23,13 @@ tasksRouter.post('/new', (req, res, next) => {
     });
 });
 
-tasksRouter.get('/list', (req, res, next) => {
+tasksRouter.get('/list/single', (req, res, next) => {
   const { id } = req.query;
+  const today = new Date();
 
-  Task.find({ plant: id })
+  Task.find({ plant: id, done: 0, date: { $gte: today } })
     .sort({ date: 1 })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
@@ -38,31 +37,47 @@ tasksRouter.get('/list', (req, res, next) => {
     });
 });
 
-// tasksRouter.post('/update', (req, res, next) => {
-//   const { id } = req.id;
-//   console.log(req.body);
+tasksRouter.get('/list/all', (req, res, next) => {
+  const { id } = req.query;
 
-//   Task.findByIdAndUpdate(id, { status: 'done' })
+  Task.find({ owner: id })
+    .sort({ date: 1 })
+    .populate('plant')
+    .populate('garden')
+    .then(data => {
+      res.json({ data });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+tasksRouter.post('/update', (req, res, next) => {
+  const { id } = req.body;
+
+  Task.findByIdAndUpdate(id, {
+    $bit: {
+      done: { xor: 1 }
+    }
+  })
+    .then(data => {
+      res.json({ data });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+// tasksRouter.get('/single', (req, res, next) => {
+//   const { id } = req.query;
+
+//   Task.findById(id)
 //     .then(data => {
-//       console.log(data);
 //       res.json({ data });
 //     })
 //     .catch(error => {
 //       next(error);
 //     });
 // });
-
-tasksRouter.get('/single', (req, res, next) => {
-  const { id } = req.query;
-
-  Task.findById(id)
-    .then(data => {
-      console.log(data);
-      res.json({ data });
-    })
-    .catch(error => {
-      next(error);
-    });
-});
 
 module.exports = tasksRouter;

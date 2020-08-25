@@ -8,7 +8,6 @@ import SignIn from './views/Authentication/SignIn';
 import SignUp from './views/Authentication/SignUp';
 import Profile from './views/Profile';
 import Gardens from './views/Gardens/Gardens';
-// import NewGarden from './views/Gardens/NewGarden';
 import SingleGarden from './views/Gardens/SingleGarden';
 // import Plants from './views/Plants/Plants';
 // import NewPlant from './views/Plants/NewPlant';
@@ -117,11 +116,42 @@ class App extends Component {
           />
           {/* <Route path="/plants" component={Plants} exact /> */}
           {/* <Route path="/plants/new" component={NewPlant} exact /> */}
-          <Route path="/plants/:plantId" component={SinglePlant} exact />
-          <Route path="/plants/edit/:plantId" component={EditPlant} exact />
-          <Route path="/search" component={Search} exact />
-          <Route path="/search/:id" component={SearchedPlant} exact />
-          <Route path="/tasks" component={Tasks} exact />
+          <ProtectedRoute
+            path="/plants/:plantId"
+            component={SinglePlant}
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
+          <ProtectedRoute
+            path="/plants/edit/:plantId"
+            component={EditPlant}
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
+          <ProtectedRoute
+            path="/search"
+            component={Search}
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
+          <ProtectedRoute
+            path="/search/:id"
+            component={SearchedPlant}
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
+          <ProtectedRoute
+            path="/tasks"
+            render={props => <Tasks user={this.state.user} />}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+            exact
+          />
         </Switch>
       </div>
     );

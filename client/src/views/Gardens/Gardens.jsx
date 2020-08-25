@@ -26,7 +26,7 @@ class Gardens extends Component {
           loaded: true
         });
       })
-      .then(error => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -45,7 +45,6 @@ class Gardens extends Component {
     const body = { name, owner };
     createGarden(body)
       .then(data => {
-        console.log(data);
         this.setState({
           name: ''
         });

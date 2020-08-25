@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { loadSinglePlant, deletePlant } from './../../services/plants';
 import { loadPlantFromAPI } from './../../services/openfarm';
-import { createTask, loadTasks } from './../../services/tasks';
+import {
+  createTask,
+  loadSinglePlantTasks,
+  updateTask
+} from './../../services/tasks';
 import { Link } from 'react-router-dom';
 
 class SinglePlant extends Component {
@@ -15,7 +19,7 @@ class SinglePlant extends Component {
       date: '',
       loadedTasks: false,
       taskList: null,
-      loadedPlant: false,
+      loadedPlant: false
     };
   }
 
@@ -64,7 +68,7 @@ class SinglePlant extends Component {
     }
 
     const id = this.state.plant._id;
-    loadTasks(id)
+    loadSinglePlantTasks(id)
       .then(data => {
         this.setState({
           taskList: data.data,
@@ -103,15 +107,18 @@ class SinglePlant extends Component {
   };
 
   handleTaskCompletion = id => {
-    // console.log(id);
-    // updateTask(id).then(data => {
-    //   this.setState({
-    //     taskList: data,
-    //     loadedTasks: false
-    //   }).catch(error => {
-    //     console.log(error);
-    //   });
-    // });
+    const body = { id };
+    updateTask(body)
+      .then(data => {
+        this.setState({
+          taskList: data,
+          loadedTasks: false
+        });
+        this.load();
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
@@ -168,58 +175,66 @@ class SinglePlant extends Component {
               );
             })}
         </div>
-        {this.state.loadedPlant && (
-          this.state.loaded && 
-          <>
-            <h1>{this.state.plant.nickname}</h1>
+        {this.state.loadedPlant &&
+          this.state.loaded && (
+            <>
+              <h1>{this.state.plant.nickname}</h1>
               <img
-                  src={this.state.plant.image ? this.state.plant.image : plantInfo.attributes.main_image_path ? plantInfo.attributes.main_image_path : 'https://tinyurl.com/y6tmad6q'  }
-                  // plantInfo.attributes.main_image_path.includes('/assets')? plantInfo.attributes.main_image_path :  ? plantInfo.attributes.main_image_path : ''
-                  style={{ width: '20em' }}
-                />
-            <form onSubmit={this.handlePlantDeletion}>
-              <button>Delete Plant</button>
-            </form>
-            <Link to={`/plants/edit/${this.state.plant._id}`}>Edit Plant</Link>
-            {this.state.loaded && (
-              <div>
-                {plantInfo.attributes.name && (
-                  <p>
-                    <strong>Common name:</strong> {plantInfo.attributes.name}
-                  </p>
-                )}
-              
-                {plantInfo.attributes.binomial_name && (
-                  <p>
-                    <strong>Scientific name:</strong>{' '}
-                    {plantInfo.attributes.binomial_name}
-                  </p>
-                )}
+                src={
+                  this.state.plant.image
+                    ? this.state.plant.image
+                    : plantInfo.attributes.main_image_path
+                    ? plantInfo.attributes.main_image_path
+                    : 'https://tinyurl.com/y6tmad6q'
+                }
+                // plantInfo.attributes.main_image_path.includes('/assets')? plantInfo.attributes.main_image_path :  ? plantInfo.attributes.main_image_path : ''
+                style={{ width: '20em' }}
+              />
+              <form onSubmit={this.handlePlantDeletion}>
+                <button>Delete Plant</button>
+              </form>
+              <Link to={`/plants/edit/${this.state.plant._id}`}>
+                Edit Plant
+              </Link>
+              {this.state.loaded && (
+                <div>
+                  {plantInfo.attributes.name && (
+                    <p>
+                      <strong>Common name:</strong> {plantInfo.attributes.name}
+                    </p>
+                  )}
 
-                {plantInfo.attributes.description && (
-                  <p>
-                    <strong>Description:</strong>{' '}
-                    {plantInfo.attributes.description}
-                  </p>
-                )}
+                  {plantInfo.attributes.binomial_name && (
+                    <p>
+                      <strong>Scientific name:</strong>{' '}
+                      {plantInfo.attributes.binomial_name}
+                    </p>
+                  )}
 
-                {plantInfo.attributes.sun_requirements && (
-                  <p>
-                    <strong>Sun Requirements:</strong>{' '}
-                    {plantInfo.attributes.sun_requirements}
-                  </p>
-                )}
+                  {plantInfo.attributes.description && (
+                    <p>
+                      <strong>Description:</strong>{' '}
+                      {plantInfo.attributes.description}
+                    </p>
+                  )}
 
-                {plantInfo.attributes.sowing_method && (
-                  <p>
-                    <strong>How to sow:</strong>{' '}
-                    {plantInfo.attributes.sowing_method}
-                  </p>
-                )}
-              </div>
-            )}
-          </>
-        )}
+                  {plantInfo.attributes.sun_requirements && (
+                    <p>
+                      <strong>Sun Requirements:</strong>{' '}
+                      {plantInfo.attributes.sun_requirements}
+                    </p>
+                  )}
+
+                  {plantInfo.attributes.sowing_method && (
+                    <p>
+                      <strong>How to sow:</strong>{' '}
+                      {plantInfo.attributes.sowing_method}
+                    </p>
+                  )}
+                </div>
+              )}
+            </>
+          )}
       </div>
     );
   }
