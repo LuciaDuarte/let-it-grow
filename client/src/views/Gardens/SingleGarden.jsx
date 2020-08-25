@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createPlant, loadPlants } from './../../services/plants';
+import { loadSingleGarden, deleteGarden } from './../../services/garden';
 import { Link } from 'react-router-dom';
 import { searchPlantsFromAPI } from './../../services/openfarm';
 
@@ -14,13 +15,26 @@ class SingleGarden extends Component {
       apiId: '',
       image: '',
       search: '',
-      results: {}
+      results: {},
+      loadedGarden: false,
+      garden: null
     };
   }
 
   componentDidMount() {
-    const garden = this.props.match.params.gardenId;
-    this.load(garden);
+    const gardenId = this.props.match.params.gardenId;
+    loadSingleGarden(gardenId)
+      .then(data => {
+        const garden = data.data;
+        this.setState({
+          garden,
+          loadedGarden: true
+        });
+        this.load(gardenId);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   load(garden) {
@@ -74,6 +88,36 @@ class SingleGarden extends Component {
       });
   };
 
+  handleGardenDeletion = event => {
+    event.preventDefault();
+    const id = this.props.match.params.gardenId;
+
+    if (this.state.garden.plants.length > 0) {
+      const deletePlant = window.confirm(
+        'You will lose all of the plants inside this garden with this action'
+      );
+      if (deletePlant === true) {
+        deleteGarden(id)
+          .then(() => {
+            this.props.history.push('/gardens');
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        console.log(deletePlant);
+      }
+    } else {
+      deleteGarden(id)
+        .then(() => {
+          this.props.history.push('/gardens');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
   handleSearchFormSubmission = event => {
     event.preventDefault();
 
@@ -99,7 +143,12 @@ class SingleGarden extends Component {
     return (
       <div>
         <Link to="/gardens">Back to all gardens</Link>
-        <h1>All Plants</h1>
+        {this.state.loadedGarden && (
+          <h1>All Plants in {this.state.garden.name}</h1>
+        )}
+        <form onSubmit={this.handleGardenDeletion}>
+          <button>Delete Garden</button>
+        </form>
         {this.state.loaded && (
           <>
             {this.state.plants.map(item => {

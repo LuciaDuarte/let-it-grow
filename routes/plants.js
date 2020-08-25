@@ -1,7 +1,8 @@
 'use strict';
 
-const { Router, request } = require('express');
+const { Router } = require('express');
 const Plant = require('./../models/plant');
+const Garden = require('./../models/garden');
 const multer = require('multer');
 const cloudinary = require('cloudinary');
 const multerStorageCloudinary = require('multer-storage-cloudinary');
@@ -28,8 +29,16 @@ plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
     image: url
   })
     .then(data => {
-      console.log('this is data', data);
       res.json({ data });
+      return Garden.findByIdAndUpdate(
+        garden,
+        {
+          $push: { plants: data._id }
+        },
+        { new: true }
+      ).then(newGarden => {
+        res.json({ newGarden });
+      });
     })
     .catch(error => {
       next(error);
@@ -41,7 +50,6 @@ plantsRouter.get('/list', (req, res, next) => {
 
   Plant.find({ garden: garden })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
@@ -63,7 +71,6 @@ plantsRouter.get('/single', (req, res, next) => {
 
 plantsRouter.post('/delete/:id', (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
 
   Plant.findByIdAndDelete(id)
     .then(() => {
@@ -76,25 +83,19 @@ plantsRouter.post('/delete/:id', (req, res, next) => {
 
 plantsRouter.post('/edit/:id', upload.single('image'), (req, res, next) => {
   const id = req.params.id;
-  const { apiId, nickname} = req.body;
+  const { apiId, nickname } = req.body;
   let url;
-    if (req.file) {
-      url = req.file.path;
-    }
+  if (req.file) {
+    url = req.file.path;
+  }
 
-  Plant.findByIdAndUpdate(
-    id,
-    { apiId, nickname, image:url }, 
-    { new: true }
-  )
+  Plant.findByIdAndUpdate(id, { apiId, nickname, image: url }, { new: true })
     .then(data => {
-      console.log(data);
       res.json({ data });
     })
     .catch(error => {
       next(error);
     });
 });
-
 
 module.exports = plantsRouter;
