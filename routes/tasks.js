@@ -6,10 +6,11 @@ const Task = require('./../models/task');
 const tasksRouter = new Router();
 
 tasksRouter.post('/new', (req, res, next) => {
-  const { task, date, plant } = req.body;
-  console.log(req.body);
+  const { task, date, plant, owner, garden } = req.body;
 
   Task.create({
+    owner,
+    garden,
     task,
     date: new Date(date),
     plant
@@ -36,6 +37,20 @@ tasksRouter.get('/list', (req, res, next) => {
       next(error);
     });
 });
+
+// tasksRouter.post('/update', (req, res, next) => {
+//   const { id } = req.id;
+//   console.log(req.body);
+
+//   Task.findByIdAndUpdate(id, { status: 'done' })
+//     .then(data => {
+//       console.log(data);
+//       res.json({ data });
+//     })
+//     .catch(error => {
+//       next(error);
+//     });
+// });
 
 tasksRouter.get('/single', (req, res, next) => {
   const { id } = req.query;

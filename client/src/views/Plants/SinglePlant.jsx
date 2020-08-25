@@ -48,7 +48,6 @@ class SinglePlant extends Component {
       });
   };
 
-
   load() {
     const apiId = this.state.plant.apiId;
     if (apiId) {
@@ -87,11 +86,11 @@ class SinglePlant extends Component {
   handleFormSubmission = event => {
     event.preventDefault();
     const { task, date } = this.state;
+    const { owner, garden } = this.state.plant;
     const plant = this.state.plant._id;
-    const body = { task, date, plant };
+    const body = { task, date, plant, owner, garden };
     createTask(body)
       .then(data => {
-        console.log(data);
         this.setState({
           task: '',
           date: ''
@@ -103,14 +102,34 @@ class SinglePlant extends Component {
       });
   };
 
+  handleTaskCompletion = id => {
+    // console.log(id);
+    // updateTask(id).then(data => {
+    //   this.setState({
+    //     taskList: data,
+    //     loadedTasks: false
+    //   }).catch(error => {
+    //     console.log(error);
+    //   });
+    // });
+  };
+
   render() {
     const plantInfo = this.state.plantInfo;
     return (
       <div>
         {this.state.loadedPlant && (
-          <Link to={`/gardens/${this.state.plant.garden}`}>Back to garden</Link>
+          <>
+            <Link to={`/gardens/${this.state.plant.garden}`}>
+              Back to garden
+            </Link>
+            <h1>{this.state.plant.nickname}</h1>
+            <form onSubmit={this.handlePlantDeletion}>
+              <button>Delete Plant</button>
+            </form>
+            <Link to={`/plants/edit/${this.state.plant._id}`}>Edit Plant</Link>
+          </>
         )}
-        <h1>Single Plant</h1>
         <div>
           <h3>Add a new task</h3>
           <form onSubmit={this.handleFormSubmission}>
@@ -142,6 +161,9 @@ class SinglePlant extends Component {
                 <div key={item._id}>
                   <p>What? {item.task}</p>
                   <p>When? {date.toDateString()}</p>
+                  <button onClick={() => this.handleTaskCompletion(item._id)}>
+                    Mark as done
+                  </button>
                 </div>
               );
             })}
@@ -167,11 +189,6 @@ class SinglePlant extends Component {
                   </p>
                 )}
               
-              
-              
-
-               
-
                 {plantInfo.attributes.binomial_name && (
                   <p>
                     <strong>Scientific name:</strong>{' '}

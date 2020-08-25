@@ -8,6 +8,9 @@ const api = axios.create({
 export const createTask = body =>
   api.post('/new', body).then(response => response.data);
 
+// export const updateTask = id =>
+//   api.post('/update', id).then(response => response.data);
+
 export const loadTasks = id =>
   api
     .get('/list', {
