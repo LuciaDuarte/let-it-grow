@@ -74,4 +74,27 @@ plantsRouter.post('/delete/:id', (req, res, next) => {
     });
 });
 
+plantsRouter.post('/edit/:id', upload.single('image'), (req, res, next) => {
+  const id = req.params.id;
+  const { apiId, nickname} = req.body;
+  let url;
+    if (req.file) {
+      url = req.file.path;
+    }
+
+  Plant.findByIdAndUpdate(
+    id,
+    { apiId, nickname, image:url }, 
+    { new: true }
+  )
+    .then(data => {
+      console.log(data);
+      res.json({ data });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+
 module.exports = plantsRouter;

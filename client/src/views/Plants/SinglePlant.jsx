@@ -48,6 +48,7 @@ class SinglePlant extends Component {
       });
   };
 
+
   load() {
     const apiId = this.state.plant.apiId;
     if (apiId) {
@@ -151,6 +152,7 @@ class SinglePlant extends Component {
             <form onSubmit={this.handlePlantDeletion}>
               <button>Delete Plant</button>
             </form>
+            <Link to={`/plants/edit/${this.state.plant._id}`}>Edit Plant</Link>
             {this.state.loaded && (
               <div>
                 {plantInfo.attributes.name && (
@@ -161,12 +163,12 @@ class SinglePlant extends Component {
 
                 <img
                   src={
-                    plantInfo.attributes.main_image_path.includes('/assets')
-                      ? 'https://tinyurl.com/y6tmad6q'
-                      : plantInfo.attributes.main_image_path
+                    this.state.plant.image ? this.state.plant.image : plantInfo.attributes.main_image_path.includes('/assets') ? 'https://tinyurl.com/y6tmad6q' : plantInfo.attributes.main_image_path 
                   }
                   style={{ width: '20em' }}
                 />
+
+               
 
                 {plantInfo.attributes.binomial_name && (
                   <p>

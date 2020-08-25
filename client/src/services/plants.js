@@ -8,9 +8,6 @@ const api = axios.create({
 export const createPlant = body => {
   const formBody = new window.FormData();
   for (let property in body) formBody.append(property, body[property]);
-  // for (var pair of formBody.entries()) {
-  //   console.log(pair[0]+ ', ' + pair[1]);
-  // }
   return api.post('/new', formBody).then(response => {
     return response.data;
   });
@@ -27,6 +24,10 @@ export const loadPlants = garden =>
 
 export const deletePlant = id =>
   api.post(`/delete/${id}`, id).then(response => response.data);
+
+
+  export const editPlant = (id, body) =>
+  api.post(`/edit/${id}`, body).then(response => response.data);
 
 export const loadSinglePlant = id =>
   api

@@ -13,6 +13,7 @@ import SingleGarden from './views/Gardens/SingleGarden';
 // import Plants from './views/Plants/Plants';
 // import NewPlant from './views/Plants/NewPlant';
 import SinglePlant from './views/Plants/SinglePlant';
+import EditPlant from './views/Plants/EditPlant';
 import SearchedPlant from './views/Plants/SearchedPlant';
 import Search from './views/Search';
 import Tasks from './views/Tasks';
@@ -117,6 +118,7 @@ class App extends Component {
           {/* <Route path="/plants" component={Plants} exact /> */}
           {/* <Route path="/plants/new" component={NewPlant} exact /> */}
           <Route path="/plants/:plantId" component={SinglePlant} exact />
+          <Route path="/plants/edit/:plantId" component={EditPlant} exact />
           <Route path="/search" component={Search} exact />
           <Route path="/search/:id" component={SearchedPlant} exact />
           <Route path="/tasks" component={Tasks} exact />

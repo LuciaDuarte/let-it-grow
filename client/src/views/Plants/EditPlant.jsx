@@ -1,78 +1,63 @@
 import React, { Component } from 'react';
-import { createPlant, loadPlants } from './../../services/plants';
-import { Link } from 'react-router-dom';
 import { searchPlantsFromAPI } from './../../services/openfarm';
+import { loadPlantFromAPI } from './../../services/openfarm';
+import { Link } from 'react-router-dom';
+import { loadSinglePlant, deletePlant, editPlant} from './../../services/plants';
 
-class SingleGarden extends Component {
+
+class EditPlant extends Component {
   constructor() {
     super();
     this.state = {
-      loaded: false,
-      loadedResults: false,
-      plants: null,
-      nickname: '',
       apiId: '',
+      nickname: '', 
       image: '',
+      loaded: false,
       search: '',
-      results: {}
+      results: {},
+      error: null,
+      plant: null,
+      plantInfo: {},
+      task: '',
+      date: '',
+      loadedTasks: false,
+      taskList: null,
+      loadedPlant: false
     };
   }
 
+  load() {
+    const apiId = this.state.plant.apiId;
+    if (apiId) {
+      loadPlantFromAPI(apiId)
+        .then(data => {
+          this.setState({
+            plantInfo: data.data,
+            loaded: true
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
   componentDidMount() {
-    const garden = this.props.match.params.gardenId;
-    this.load(garden);
-  }
-
-  load(garden) {
-    loadPlants(garden)
+    const plant = this.props.match.params.plantId;
+    loadSinglePlant(plant)
       .then(data => {
-        const plants = data.data;
+        const plant = data.data;
         this.setState({
-          plants: plants,
-          loaded: true
+          plant: plant,
+          loadedPlant: true
         });
+        this.load();
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  handleImageChange = event => {
-    const image = event.target.files[0];
-    this.setState({
-      image
-    });
-  };
-
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleFormSubmission = event => {
-    event.preventDefault();
-    const { apiId, nickname } = this.state;
-    const garden = this.props.match.params.gardenId;
-    const owner = this.props.user._id;
-    const image = this.state.image;
-    const body = { apiId, nickname, image, owner, garden };
-    createPlant(body)
-      .then(data => {
-        this.setState({
-          name: '',
-          nickname: '',
-          image: '',
-          results: '',
-          loadedResults: false
-        });
-        this.load(garden);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   handleSearchFormSubmission = event => {
     event.preventDefault();
@@ -95,25 +80,50 @@ class SingleGarden extends Component {
       });
   };
 
+ 
+
+
+  handlePlantEditing = event => {
+    event.preventDefault();
+    const id = this.props.match.params.plantId;
+    const { apiId, nickname } = this.state;
+    const image = this.state.image;
+
+    const body = { apiId, nickname, image };
+
+    editPlant(id, body)
+      .then(data => {
+        this.props.history.push(`/plants/${id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handlePlantDeletion = event => {
+    event.preventDefault();
+    const id = this.props.match.params.plantId;
+
+    deletePlant(id)
+      .then(() => {
+        this.props.history.push('/');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   render() {
     return (
       <div>
-        <Link to="/gardens">Back to all gardens</Link>
-        <h1>All Plants</h1>
-        {this.state.loaded && (
-          <>
-            {this.state.plants.map(item => {
-              return (
-                <div key={item._id}>
-                  <Link to={`/plants/${item._id}`}>
-                    <h3>{item.nickname}</h3>
-                  </Link>
-                </div>
-              );
-            })}
-          </>
-        )}
-        <h1>Add a new Plant</h1>
+        <h1>Edit Plant</h1>
         <form onSubmit={this.handleSearchFormSubmission}>
           <label htmlFor="input-search">Plant Name</label>
           <input
@@ -127,7 +137,7 @@ class SingleGarden extends Component {
           <button>Search</button>
         </form>
 
-        <form onSubmit={this.handleFormSubmission}>
+        <form onSubmit={this.handlePlantEditing}>
           {this.state.loadedResults &&
             this.state.results.map(item => {
               return (
@@ -176,11 +186,19 @@ class SingleGarden extends Component {
             // value={this.state.image}
             onChange={this.handleImageChange}
           />
-          <button>Create</button>
+          <button>Edit</button>
         </form>
+        <form onSubmit={this.handlePlantDeletion}>
+              <button>Delete Plant</button>
+            </form>
+
       </div>
     );
   }
+
+
 }
 
-export default SingleGarden;
+
+
+export default EditPlant;
