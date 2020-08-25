@@ -8,6 +8,18 @@ const api = axios.create({
 export const createGarden = body =>
   api.post('/new', body).then(response => response.data);
 
+export const loadSingleGarden = gardenId =>
+  api
+    .get('/single', {
+      params: {
+        gardenId
+      }
+    })
+    .then(response => response.data);
+
+export const deleteGarden = id =>
+  api.post(`/delete/${id}`, id).then(response => response.data);
+
 export const loadGardens = user =>
   api
     .get('/list', {

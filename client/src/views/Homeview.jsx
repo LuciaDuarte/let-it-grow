@@ -7,9 +7,12 @@ const Homeview = ({ user }) => {
       <h1>Let It Grow 🌱</h1>
       {user && (
         <>
-          <h2>Welcome, {user.name}</h2>
-          <Link to="/gardens">My gardens</Link>
-          <Link to="/search">Search for a plant</Link>
+          <div className="homepage">
+            <h2>Welcome, {user.name}</h2>
+            <Link to="/gardens">My gardens</Link>
+            <Link to="/tasks">My tasks</Link>
+            <Link to="/search">Search for a plant</Link>
+          </div>
         </>
       )}
     </div>
