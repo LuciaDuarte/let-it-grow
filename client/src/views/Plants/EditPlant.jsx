@@ -58,6 +58,13 @@ class EditPlant extends Component {
       });
   }
 
+  handleImageChange = event => {
+    const image = event.target.files[0];
+    this.setState({
+      image
+    });
+  };
+
 
   handleSearchFormSubmission = event => {
     event.preventDefault();
@@ -72,11 +79,6 @@ class EditPlant extends Component {
         });
       })
       .catch(error => {
-        //console.log(error);
-        // const serverError = error.response.data.error;
-        // this.setState({
-        //   error: serverError
-        // });
       });
   };
 
@@ -90,7 +92,6 @@ class EditPlant extends Component {
     const image = this.state.image;
 
     const body = { apiId, nickname, image };
-
     editPlant(id, body)
       .then(data => {
         this.props.history.push(`/plants/${id}`);
@@ -121,9 +122,25 @@ class EditPlant extends Component {
   };
 
   render() {
+    const plantInfo = this.state.plantInfo;
+    console.log(plantInfo);
     return (
       <div>
         <h1>Edit Plant</h1>
+        {this.state.loadedPlant && (
+          this.state.loaded && 
+          <>
+          <img
+          src={this.state.image ? this.state.image : plantInfo.attributes.main_image_path ? plantInfo.attributes.main_image_path : 'https://tinyurl.com/y6tmad6q'  }
+
+          style={{ width: '20em' }}
+        />
+       
+          <h1>{this.state.plant.nickname}</h1>
+          
+              </>
+        )}
+
         <form onSubmit={this.handleSearchFormSubmission}>
           <label htmlFor="input-search">Plant Name</label>
           <input
@@ -136,7 +153,7 @@ class EditPlant extends Component {
           />
           <button>Search</button>
         </form>
-
+      
         <form onSubmit={this.handlePlantEditing}>
           {this.state.loadedResults &&
             this.state.results.map(item => {
@@ -175,6 +192,7 @@ class EditPlant extends Component {
             placeholder="Plant Nickname"
             value={this.state.nickname}
             onChange={this.handleInputChange}
+            required
           />
 
           <label htmlFor="input-file">Choose image</label>

@@ -26,8 +26,12 @@ export const deletePlant = id =>
   api.post(`/delete/${id}`, id).then(response => response.data);
 
 
-  export const editPlant = (id, body) =>
-  api.post(`/edit/${id}`, body).then(response => response.data);
+  export const editPlant = (id, body) =>{
+  const formBody = new window.FormData();
+  for (let property in body) formBody.append(property, body[property]);
+  return api.post(`/edit/${id}`, formBody, id).then(response => {return response.data;
+  });
+  }
 
 export const loadSinglePlant = id =>
   api

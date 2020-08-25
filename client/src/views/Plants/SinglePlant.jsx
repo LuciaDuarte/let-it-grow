@@ -15,7 +15,7 @@ class SinglePlant extends Component {
       date: '',
       loadedTasks: false,
       taskList: null,
-      loadedPlant: false
+      loadedPlant: false,
     };
   }
 
@@ -147,8 +147,14 @@ class SinglePlant extends Component {
             })}
         </div>
         {this.state.loadedPlant && (
+          this.state.loaded && 
           <>
             <h1>{this.state.plant.nickname}</h1>
+              <img
+                  src={this.state.plant.image ? this.state.plant.image : plantInfo.attributes.main_image_path ? plantInfo.attributes.main_image_path : 'https://tinyurl.com/y6tmad6q'  }
+                  // plantInfo.attributes.main_image_path.includes('/assets')? plantInfo.attributes.main_image_path :  ? plantInfo.attributes.main_image_path : ''
+                  style={{ width: '20em' }}
+                />
             <form onSubmit={this.handlePlantDeletion}>
               <button>Delete Plant</button>
             </form>
@@ -160,13 +166,9 @@ class SinglePlant extends Component {
                     <strong>Common name:</strong> {plantInfo.attributes.name}
                   </p>
                 )}
-
-                <img
-                  src={
-                    this.state.plant.image ? this.state.plant.image : plantInfo.attributes.main_image_path.includes('/assets') ? 'https://tinyurl.com/y6tmad6q' : plantInfo.attributes.main_image_path 
-                  }
-                  style={{ width: '20em' }}
-                />
+              
+              
+              
 
                
 

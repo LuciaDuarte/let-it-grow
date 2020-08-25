@@ -88,7 +88,7 @@ plantsRouter.post('/edit/:id', upload.single('image'), (req, res, next) => {
     { new: true }
   )
     .then(data => {
-      console.log(data);
+      console.log("this is the data", data);
       res.json({ data });
     })
     .catch(error => {
