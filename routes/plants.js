@@ -3,6 +3,7 @@
 const { Router } = require('express');
 const Plant = require('./../models/plant');
 const Garden = require('./../models/garden');
+const Task = require('./../models/task');
 const multer = require('multer');
 const cloudinary = require('cloudinary');
 const multerStorageCloudinary = require('multer-storage-cloudinary');
@@ -73,7 +74,11 @@ plantsRouter.post('/delete/:id', (req, res, next) => {
   const id = req.params.id;
 
   Plant.findByIdAndDelete(id)
-    .then(() => {
+    .then(data => {
+      res.json({});
+      return Task.deleteMany({ plant: id });
+    })
+    .then(tasks => {
       res.json({});
     })
     .catch(error => {
@@ -91,7 +96,6 @@ plantsRouter.post('/edit/:id', upload.single('image'), (req, res, next) => {
 
   Plant.findByIdAndUpdate(id, { apiId, nickname, image: url }, { new: true })
     .then(data => {
-      console.log("this is the data", data);
       res.json({ data });
     })
     .catch(error => {

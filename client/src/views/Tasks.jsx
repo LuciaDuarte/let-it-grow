@@ -100,11 +100,6 @@ class Tasks extends Component {
     today.setDate(today.getDate() - 1);
     updateTask(body)
       .then(data => {
-        // console.log(data);
-        // this.setState({
-        //   filteredTasks: data,
-        //   loadedTasks: false
-        // });
         loadAllTasks(user)
           .then(data => {
             const tasks = data.data;
@@ -120,6 +115,7 @@ class Tasks extends Component {
               filteredTasks: filteredData,
               loadedFiltered: true
             });
+            this.handleFilters();
           })
           .catch(error => {
             console.log(error);
@@ -175,7 +171,7 @@ class Tasks extends Component {
                 <p>{item.plant.nickname}</p>
                 <p>{date.toDateString()}</p>
                 <button onClick={() => this.handleTaskCompletion(item._id)}>
-                  Mark as done
+                  {item.done === 0 ? 'Mark as done' : 'Mark as to-do'}
                 </button>
               </div>
             );

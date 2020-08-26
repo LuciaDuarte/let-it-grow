@@ -2,6 +2,8 @@
 
 const { Router } = require('express');
 const Garden = require('./../models/garden');
+const Task = require('./../models/task');
+const Plant = require('./../models/plant');
 
 const gardenRouter = new Router();
 
@@ -49,6 +51,14 @@ gardenRouter.post('/delete/:id', (req, res, next) => {
 
   Garden.findByIdAndDelete(id)
     .then(() => {
+      res.json({});
+      return Plant.deleteMany({ garden: id });
+    })
+    .then(tasks => {
+      res.json({});
+      return Task.deleteMany({ garden: id });
+    })
+    .then(plants => {
       res.json({});
     })
     .catch(error => {
