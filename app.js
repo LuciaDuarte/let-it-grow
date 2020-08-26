@@ -65,15 +65,15 @@ app.use('/garden', gardenRouter);
 app.use('/plants', plantsRouter);
 app.use('/tasks', tasksRouter);
 
-// Catch missing routes and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
+app.use('*', (request, response, next) => {
+  const error = new Error('Page not found.');
+  next(error);
 });
 
-// Catch all error handler
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({ type: 'error', error: { message: error.message } });
+app.use((error, request, response, next) => {
+  response.status(400);
+  response.json({ error: { message: error.message } });
 });
+
 
 module.exports = app;

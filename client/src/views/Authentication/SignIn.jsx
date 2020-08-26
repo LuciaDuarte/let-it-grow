@@ -28,11 +28,11 @@ class SignIn extends Component {
         this.props.onUserUpdate(user);
       })
       .catch(error => {
-        console.log(error);
-        // const serverError = error;
-        // this.setState({
-        //   error: serverError
-        // });
+        // console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError,
+        });
       });
   };
 
@@ -48,8 +48,8 @@ class SignIn extends Component {
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleInputChange}
+            required
           />
-
           <label htmlFor="input-password">Password</label>
           <input
             id="input-password"
@@ -58,6 +58,7 @@ class SignIn extends Component {
             placeholder="Password"
             value={this.state.password}
             onChange={this.handleInputChange}
+            required
           />
 
           {this.state.error && (
@@ -66,6 +67,7 @@ class SignIn extends Component {
               <p>{this.state.error.message}</p>
             </div>
           )}
+          
 
           <button>Sign In</button>
         </form>

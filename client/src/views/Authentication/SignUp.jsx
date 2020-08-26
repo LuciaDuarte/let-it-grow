@@ -44,6 +44,7 @@ class SignUp extends Component {
             placeholder="name"
             value={this.state.name}
             onChange={this.handleInputChange}
+            required
           />
 
           <label htmlFor="input-email">Email</label>
@@ -54,6 +55,7 @@ class SignUp extends Component {
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleInputChange}
+            required
           />
 
           <label htmlFor="input-password">Password</label>
@@ -64,6 +66,8 @@ class SignUp extends Component {
             placeholder="Password"
             value={this.state.password}
             onChange={this.handleInputChange}
+            minlength="6"
+            required
           />
 
           <button>Sign Up</button>
