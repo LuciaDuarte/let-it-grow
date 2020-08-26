@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { signIn } from './../../services/authentication';
+import { Link } from 'react-router-dom';
 
 class SignIn extends Component {
   constructor() {
@@ -37,8 +38,17 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleFormSubmission}>
+      <div className="sign-in">
+        <h1 className="mt-5 mb-5">
+          Let It Grow{' '}
+          <span role="img" aria-label="emoji">
+            🌱
+          </span>
+        </h1>
+        <form
+          onSubmit={this.handleFormSubmission}
+          className="form-group sign-in"
+        >
           <label htmlFor="input-email">Email</label>
           <input
             id="input-email"
@@ -60,14 +70,17 @@ class SignIn extends Component {
             required
           />
 
+          <button className="btn btn-outline-success">Sign In</button>
+          <Link to="/authentication/sign-up">
+            <small>Don't have an account? Sign Up</small>
+          </Link>
+
           {this.state.error && (
-            <div>
+            <div className="alert alert-danger mt-3">
               <p>There was an error:</p>
               <p>{this.state.error.message}</p>
             </div>
           )}
-
-          <button>Sign In</button>
         </form>
       </div>
     );

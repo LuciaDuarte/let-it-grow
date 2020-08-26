@@ -26,6 +26,7 @@ gardenRouter.get('/list', (req, res, next) => {
   const { user } = req.query;
 
   Garden.find({ owner: user })
+    .populate('plants')
     .then(data => {
       res.json({ data });
     })
@@ -52,11 +53,11 @@ gardenRouter.post('/delete/:id', (req, res, next) => {
 
   Garden.findByIdAndDelete(id)
     .then(() => {
-      res.json({});
+      //  res.json({});
       return Plant.deleteMany({ garden: id });
     })
     .then(tasks => {
-      res.json({});
+      //  res.json({});
       return Task.deleteMany({ garden: id });
     })
     .then(plants => {

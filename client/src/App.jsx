@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
 import Homeview from './views/Homeview';
 import Navbar from './components/Navbar';
 import { Switch } from 'react-router-dom';
@@ -75,6 +75,7 @@ class App extends Component {
             user={this.state.user}
             authorized={!this.state.user}
             redirect="/"
+            exact
           />
           <ProtectedRoute
             path="/authentication/sign-in"
@@ -84,6 +85,7 @@ class App extends Component {
             user={this.state.user}
             authorized={!this.state.user}
             redirect="/"
+            exact
           />
           <ProtectedRoute
             path="/profile"

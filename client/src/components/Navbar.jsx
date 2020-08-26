@@ -3,20 +3,22 @@ import { Link } from 'react-router-dom';
 
 function Navbar(props) {
   return (
-    <nav>
-      {(props.user && (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      {props.user && (
         <>
-          <Link to="/">Homepage</Link>
-          <Link to="/profile">
-            <span>{props.user.name}'s</span>
+          <Link to="/" className="nav-item nav-link">
+            Homepage
+          </Link>
+          <Link to="/profile" className="nav-item nav-link">
+            <span>{props.user.name}'s </span>
             Profile
           </Link>
-          <button onClick={props.onSignOut}>Sign Out</button>
-        </>
-      )) || (
-        <>
-          <Link to="/authentication/sign-up">Sign Up</Link>
-          <Link to="/authentication/sign-in">Sign In</Link>
+          <button
+            onClick={props.onSignOut}
+            className="btn btn-secondary logout"
+          >
+            Sign Out
+          </button>
         </>
       )}
     </nav>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { signUp } from './../../services/authentication';
+import { Link } from 'react-router-dom';
 
 class SignUp extends Component {
   constructor() {
@@ -34,8 +35,17 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleFormSubmission}>
+      <div className="sign-in">
+        <h1 className="mt-5 mb-5">
+          Let It Grow{' '}
+          <span role="img" aria-label="emoji">
+            🌱
+          </span>
+        </h1>
+        <form
+          onSubmit={this.handleFormSubmission}
+          className="form-group sign-in"
+        >
           <label htmlFor="input-name">Username</label>
           <input
             id="input-name"
@@ -70,7 +80,10 @@ class SignUp extends Component {
             required
           />
 
-          <button>Sign Up</button>
+          <button className="btn btn-outline-success">Sign Up</button>
+          <Link to="/authentication/sign-in">
+            <small>Already have an account? Sign In</small>
+          </Link>
         </form>
       </div>
     );

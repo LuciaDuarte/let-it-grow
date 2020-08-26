@@ -1,0 +1,184 @@
+.App {
+  text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  margin: 0;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+// .App-header {
+//   background-color: #282c34;
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+//   color: white;
+// }
+
+nav {
+  display: flex;
+  a,
+  button {
+    padding: 1em 0;
+    border: 0;
+    &:not(:last-child) {
+      margin-right: 1em;
+    }
+    &:first-child {
+      margin-right: auto;
+    }
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+}
+
+.homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+
+  form {
+    width: 20em;
+    input {
+      margin-bottom: 2em;
+    }
+  }
+}
+
+.card {
+  .garden {
+    width: 20em;
+  }
+}
+
+.homepage {
+  display: flex;
+  flex-direction: row;
+  .dashboard {
+    color: white;
+    font-size: 1.5em;
+    margin-bottom: 0.7em;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 0.6em;
+  }
+  a:hover {
+    color: white;
+  }
+}
+
+.gardens-div {
+  display: flex;
+  flex-direction: column;
+  background-color: #9ebc9e;
+  width: 70%;
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.tasks-div {
+  display: flex;
+  flex-direction: column;
+  background-color: #386150;
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 1em;
+  min-width: 25%;
+}
+
+.garden-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .card-garden {
+    width: 13em;
+    margin: 0 0.9em 1em;
+    padding: 0.5em;
+  }
+  .card-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    a:hover {
+      color: inherit;
+    }
+    a {
+      color: inherit;
+      h5 {
+        font-size: 1.5em;
+      }
+    }
+    img {
+      max-width: 2em;
+      margin: 1em;
+    }
+  }
+  .card-body {
+    padding: 0;
+    min-height: 10em;
+    img {
+      max-width: 2em;
+      margin: 0.5em;
+    }
+  }
+}
+
+.search-box {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1em;
+  h3 {
+    font-size: 1em;
+  }
+}
+
+.tasks-list {
+  color: darkslategrey;
+  text-align: left;
+  .task {
+    background-color: lightgray;
+    border-radius: 0.3em;
+    padding: 0.5em;
+    margin: 0.3em;
+    p {
+      line-height: 1em;
+    }
+  }
+}

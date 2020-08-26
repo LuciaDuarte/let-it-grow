@@ -30,7 +30,7 @@ plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
     image: url
   })
     .then(data => {
-      res.json({ data });
+      //  res.json({ data });
       return Garden.findByIdAndUpdate(
         garden,
         {
@@ -77,7 +77,7 @@ plantsRouter.post('/delete/:id', (req, res, next) => {
   Plant.findByIdAndDelete(id)
     .then(data => {
       plantDeleted = data;
-      res.json({});
+      //  res.json({});
       return Task.deleteMany({ plant: id });
     })
     .then(tasks => {
