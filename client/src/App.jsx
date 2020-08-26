@@ -132,14 +132,14 @@ class App extends Component {
           />
           <ProtectedRoute
             path="/search"
-            component={Search}
+            component={props => <Search {...props} user={this.state.user} />}
             authorized={this.state.user}
             redirect="/authentication/sign-in"
             exact
           />
           <ProtectedRoute
             path="/search/:id"
-            component={SearchedPlant}
+            component={props => <SearchedPlant {...props} user={this.state.user} />}
             authorized={this.state.user}
             redirect="/authentication/sign-in"
             exact

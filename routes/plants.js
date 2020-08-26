@@ -91,6 +91,7 @@ plantsRouter.post('/edit/:id', upload.single('image'), (req, res, next) => {
 
   Plant.findByIdAndUpdate(id, { apiId, nickname, image: url }, { new: true })
     .then(data => {
+      console.log("this is the data", data);
       res.json({ data });
     })
     .catch(error => {

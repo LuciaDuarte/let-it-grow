@@ -127,14 +127,7 @@ class SinglePlant extends Component {
       <div>
         {this.state.loadedPlant && (
           <>
-            <Link to={`/gardens/${this.state.plant.garden}`}>
-              Back to garden
-            </Link>
-            <h1>{this.state.plant.nickname}</h1>
-            <form onSubmit={this.handlePlantDeletion}>
-              <button>Delete Plant</button>
-            </form>
-            <Link to={`/plants/edit/${this.state.plant._id}`}>Edit Plant</Link>
+           
           </>
         )}
         <div>
@@ -190,12 +183,12 @@ class SinglePlant extends Component {
                 // plantInfo.attributes.main_image_path.includes('/assets')? plantInfo.attributes.main_image_path :  ? plantInfo.attributes.main_image_path : ''
                 style={{ width: '20em' }}
               />
+              <p><Link to={`/plants/edit/${this.state.plant._id}`}>
+                Edit Plant
+              </Link></p>
               <form onSubmit={this.handlePlantDeletion}>
                 <button>Delete Plant</button>
               </form>
-              <Link to={`/plants/edit/${this.state.plant._id}`}>
-                Edit Plant
-              </Link>
               {this.state.loaded && (
                 <div>
                   {plantInfo.attributes.name && (
