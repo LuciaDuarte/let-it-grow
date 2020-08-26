@@ -104,8 +104,6 @@ class SingleGarden extends Component {
           .catch(error => {
             console.log(error);
           });
-      } else {
-        console.log(deletePlant);
       }
     } else {
       deleteGarden(id)
@@ -188,6 +186,7 @@ class SingleGarden extends Component {
                         : item.attributes.main_image_path
                     }
                     style={{ width: '5em' }}
+                    alt={item.attributes.name}
                   />
 
                   <Link to={`/plants/search/${item.id}`}>

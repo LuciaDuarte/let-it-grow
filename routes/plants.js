@@ -37,9 +37,10 @@ plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
           $push: { plants: data._id }
         },
         { new: true }
-      ).then(newGarden => {
-        res.json({ newGarden });
-      });
+      );
+    })
+    .then(newGarden => {
+      res.json({ newGarden });
     })
     .catch(error => {
       next(error);
@@ -72,14 +73,27 @@ plantsRouter.get('/single', (req, res, next) => {
 
 plantsRouter.post('/delete/:id', (req, res, next) => {
   const id = req.params.id;
+  let plantDeleted;
 
   Plant.findByIdAndDelete(id)
     .then(data => {
+      plantDeleted = data;
       res.json({});
       return Task.deleteMany({ plant: id });
     })
     .then(tasks => {
-      res.json({});
+      const gardenId = plantDeleted.garden;
+
+      return Garden.findByIdAndUpdate(
+        gardenId,
+        {
+          $pull: { plants: id }
+        },
+        { new: true }
+      );
+    })
+    .then(newGarden => {
+      res.json({ newGarden });
     })
     .catch(error => {
       next(error);

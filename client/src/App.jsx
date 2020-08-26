@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import Homeview from './views/Homeview';
 import Navbar from './components/Navbar';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { loadMe, signOut } from './services/authentication';
 import SignIn from './views/Authentication/SignIn';
 import SignUp from './views/Authentication/SignUp';
 import Profile from './views/Profile';
 import Gardens from './views/Gardens/Gardens';
 import SingleGarden from './views/Gardens/SingleGarden';
-// import Plants from './views/Plants/Plants';
-// import NewPlant from './views/Plants/NewPlant';
 import SinglePlant from './views/Plants/SinglePlant';
 import EditPlant from './views/Plants/EditPlant';
 import SearchedPlant from './views/Plants/SearchedPlant';
@@ -74,6 +72,7 @@ class App extends Component {
             render={props => (
               <SignUp {...props} onUserUpdate={this.handleUserUpdate} />
             )}
+            user={this.state.user}
             authorized={!this.state.user}
             redirect="/"
           />
@@ -82,6 +81,7 @@ class App extends Component {
             render={props => (
               <SignIn {...props} onUserUpdate={this.handleUserUpdate} />
             )}
+            user={this.state.user}
             authorized={!this.state.user}
             redirect="/"
           />
@@ -96,7 +96,6 @@ class App extends Component {
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
-            exact
           />
           <ProtectedRoute
             path="/gardens"
@@ -104,7 +103,6 @@ class App extends Component {
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
-            exact
           />
           <ProtectedRoute
             path="/gardens/:gardenId"
@@ -112,13 +110,11 @@ class App extends Component {
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
-            exact
           />
-          {/* <Route path="/plants" component={Plants} exact /> */}
-          {/* <Route path="/plants/new" component={NewPlant} exact /> */}
           <ProtectedRoute
             path="/plants/:plantId"
             component={SinglePlant}
+            user={this.state.user}
             authorized={this.state.user}
             redirect="/authentication/sign-in"
             exact
@@ -126,6 +122,7 @@ class App extends Component {
           <ProtectedRoute
             path="/plants/edit/:plantId"
             component={EditPlant}
+            user={this.state.user}
             authorized={this.state.user}
             redirect="/authentication/sign-in"
             exact
@@ -139,7 +136,9 @@ class App extends Component {
           />
           <ProtectedRoute
             path="/search/:id"
-            component={props => <SearchedPlant {...props} user={this.state.user} />}
+            component={props => (
+              <SearchedPlant {...props} user={this.state.user} />
+            )}
             authorized={this.state.user}
             redirect="/authentication/sign-in"
             exact
@@ -150,7 +149,6 @@ class App extends Component {
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
-            exact
           />
         </Switch>
       </div>

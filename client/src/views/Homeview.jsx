@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 const Homeview = ({ user }) => {
   return (
     <div>
-      <h1>Let It Grow 🌱</h1>
+      <h1>
+        Let It Grow{' '}
+        <span role="img" aria-label="emoji">
+          🌱
+        </span>
+      </h1>
       {user && (
         <>
           <div className="homepage">
