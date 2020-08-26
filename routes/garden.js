@@ -38,6 +38,7 @@ gardenRouter.get('/single', (req, res, next) => {
   const { gardenId } = req.query;
 
   Garden.findById(gardenId)
+    .populate('plants')
     .then(data => {
       res.json({ data });
     })

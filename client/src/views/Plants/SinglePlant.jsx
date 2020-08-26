@@ -127,7 +127,7 @@ class SinglePlant extends Component {
       <div>
         {this.state.loadedPlant && (
           <>
-           
+            <h1>{this.state.plant.nickname}</h1>
           </>
         )}
         <div>
@@ -168,66 +168,68 @@ class SinglePlant extends Component {
               );
             })}
         </div>
-        {this.state.loadedPlant &&
-          this.state.loaded && (
-            <>
-              <h1>{this.state.plant.nickname}</h1>
-              <img
-                src={
-                  this.state.plant.image
-                    ? this.state.plant.image
-                    : plantInfo.attributes.main_image_path
-                    ? plantInfo.attributes.main_image_path
-                    : 'https://tinyurl.com/y6tmad6q'
-                }
-                // plantInfo.attributes.main_image_path.includes('/assets')? plantInfo.attributes.main_image_path :  ? plantInfo.attributes.main_image_path : ''
-                style={{ width: '20em' }}
-              />
-              <p><Link to={`/plants/edit/${this.state.plant._id}`}>
+        {this.state.loaded && this.state.loadedPlant && (
+          <>
+            <img
+              src={
+                this.state.plant.image
+                  ? this.state.plant.image
+                  : plantInfo.attributes.main_image_path.includes('/assets')
+                  ? 'https://tinyurl.com/y6tmad6q'
+                  : plantInfo.attributes.main_image_path
+                  ? plantInfo.attributes.main_image_path
+                  : 'https://tinyurl.com/y6tmad6q'
+              }
+              style={{ width: '20em' }}
+              alt={this.state.plant.nickname}
+            />
+            <p>
+              <Link to={`/plants/edit/${this.state.plant._id}`}>
                 Edit Plant
-              </Link></p>
-              <form onSubmit={this.handlePlantDeletion}>
-                <button>Delete Plant</button>
-              </form>
-              {this.state.loaded && (
-                <div>
-                  {plantInfo.attributes.name && (
-                    <p>
-                      <strong>Common name:</strong> {plantInfo.attributes.name}
-                    </p>
-                  )}
+              </Link>
+            </p>
+            <form onSubmit={this.handlePlantDeletion}>
+              <button>Delete Plant</button>
+            </form>
+            {this.state.loaded && (
+              <div>
+                {plantInfo.attributes.name && (
+                  <p>
+                    <strong>Common name:</strong> {plantInfo.attributes.name}
+                  </p>
+                )}
 
-                  {plantInfo.attributes.binomial_name && (
-                    <p>
-                      <strong>Scientific name:</strong>{' '}
-                      {plantInfo.attributes.binomial_name}
-                    </p>
-                  )}
+                {plantInfo.attributes.binomial_name && (
+                  <p>
+                    <strong>Scientific name:</strong>{' '}
+                    {plantInfo.attributes.binomial_name}
+                  </p>
+                )}
 
-                  {plantInfo.attributes.description && (
-                    <p>
-                      <strong>Description:</strong>{' '}
-                      {plantInfo.attributes.description}
-                    </p>
-                  )}
+                {plantInfo.attributes.description && (
+                  <p>
+                    <strong>Description:</strong>{' '}
+                    {plantInfo.attributes.description}
+                  </p>
+                )}
 
-                  {plantInfo.attributes.sun_requirements && (
-                    <p>
-                      <strong>Sun Requirements:</strong>{' '}
-                      {plantInfo.attributes.sun_requirements}
-                    </p>
-                  )}
+                {plantInfo.attributes.sun_requirements && (
+                  <p>
+                    <strong>Sun Requirements:</strong>{' '}
+                    {plantInfo.attributes.sun_requirements}
+                  </p>
+                )}
 
-                  {plantInfo.attributes.sowing_method && (
-                    <p>
-                      <strong>How to sow:</strong>{' '}
-                      {plantInfo.attributes.sowing_method}
-                    </p>
-                  )}
-                </div>
-              )}
-            </>
-          )}
+                {plantInfo.attributes.sowing_method && (
+                  <p>
+                    <strong>How to sow:</strong>{' '}
+                    {plantInfo.attributes.sowing_method}
+                  </p>
+                )}
+              </div>
+            )}
+          </>
+        )}
       </div>
     );
   }

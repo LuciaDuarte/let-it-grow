@@ -28,10 +28,9 @@ class SignIn extends Component {
         this.props.onUserUpdate(user);
       })
       .catch(error => {
-        // console.log(error);
         const serverError = error.response.data.error;
         this.setState({
-          error: serverError,
+          error: serverError
         });
       });
   };
@@ -67,7 +66,6 @@ class SignIn extends Component {
               <p>{this.state.error.message}</p>
             </div>
           )}
-          
 
           <button>Sign In</button>
         </form>

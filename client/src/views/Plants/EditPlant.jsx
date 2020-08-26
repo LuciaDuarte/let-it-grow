@@ -124,23 +124,23 @@ class EditPlant extends Component {
     return (
       <div>
         <h1>Edit Plant</h1>
-        {this.state.loadedPlant &&
-          this.state.loaded && (
-            <>
-              <img
-                src={
-                  this.state.image
-                    ? this.state.image
-                    : plantInfo.attributes.main_image_path
-                    ? plantInfo.attributes.main_image_path
-                    : 'https://tinyurl.com/y6tmad6q'
-                }
-                style={{ width: '20em' }}
-              />
+        {this.state.loadedPlant && this.state.loaded && (
+          <>
+            <img
+              src={
+                this.state.image
+                  ? this.state.image
+                  : plantInfo.attributes.main_image_path
+                  ? plantInfo.attributes.main_image_path
+                  : 'https://tinyurl.com/y6tmad6q'
+              }
+              alt={this.state.plant}
+              style={{ width: '20em' }}
+            />
 
-              <h1>{this.state.plant.nickname}</h1>
-            </>
-          )}
+            <h1>{this.state.plant.nickname}</h1>
+          </>
+        )}
 
         <form onSubmit={this.handleSearchFormSubmission}>
           <label htmlFor="input-search">Plant Name</label>
@@ -166,6 +166,7 @@ class EditPlant extends Component {
                         ? 'https://tinyurl.com/y6tmad6q'
                         : item.attributes.main_image_path
                     }
+                    alt={this.state.plant}
                     style={{ width: '5em' }}
                   />
 
