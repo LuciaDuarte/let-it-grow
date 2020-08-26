@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { loadPlantFromAPI } from './../../services/openfarm';
-import { createPlant, loadPlants } from './../../services/plants';
+import { createPlant } from './../../services/plants';
 import { loadGardens } from './../../services/garden';
 import { Link } from 'react-router-dom';
 
@@ -8,9 +8,6 @@ class SearchedPlant extends Component {
   constructor() {
     super();
     this.state = {
-      loaded: false,
-      nickname: '',
-      image: '',
       plant: {},
       loaded: false,
       loadedResults: false,
@@ -24,7 +21,6 @@ class SearchedPlant extends Component {
       loadedGardens: false,
       garden: null,
       gardens: null
-      
     };
   }
 
@@ -41,7 +37,7 @@ class SearchedPlant extends Component {
       .catch(error => {
         console.log(error);
       });
-      loadGardens(user)
+    loadGardens(user)
       .then(data => {
         const gardens = data.data;
         this.setState({
@@ -53,14 +49,12 @@ class SearchedPlant extends Component {
         console.log(error);
       });
   }
-  
- 
 
   handleFormSubmission = event => {
     event.preventDefault();
     const garden = document.getElementById('input-garden').value;
     const { nickname } = this.state;
-    const apiId = this.props.match.params.id
+    const apiId = this.props.match.params.id;
     const owner = this.props.user._id;
     const image = this.state.image;
     const body = { apiId, nickname, owner, image, garden };
@@ -152,56 +146,56 @@ class SearchedPlant extends Component {
                     {plant.attributes.height} cm
                   </p>
                 )}
-                            {plant.attributes.sun_requirements && (
-                              <p>
-                                <strong>Sun requirements:</strong>{' '}
-                                {plant.attributes.sun_requirements}
-                              </p>
-                            )}
-                            {plant.attributes.sowing_method && (
-                              <p>
-                                <strong>Sowing method:</strong>{' '}
-                                {plant.attributes.sowing_method}
-                              </p>
-                            )}
+                {plant.attributes.sun_requirements && (
+                  <p>
+                    <strong>Sun requirements:</strong>{' '}
+                    {plant.attributes.sun_requirements}
+                  </p>
+                )}
+                {plant.attributes.sowing_method && (
+                  <p>
+                    <strong>Sowing method:</strong>{' '}
+                    {plant.attributes.sowing_method}
+                  </p>
+                )}
               </div>
-          
-        <form onSubmit={this.handleFormSubmission}>
-        <h1>Add this plant to your garden</h1>
-        <label htmlFor="input-nickname">Plant Nickname</label>
-          <input
-            type="text"
-            name="nickname"
-            id="input-nickname"
-            placeholder="Plant Nickname"
-            value={this.state.nickname}
-            onChange={this.handleInputChange}
-          />
 
-          <label htmlFor="input-file">Choose image</label>
-          <input
-            type="file"
-            id="input-file"
-            name="image"
-            placeholder="Plant Image"
-            // value={this.state.image}
-            onChange={this.handleImageChange}
-          />
+              <form onSubmit={this.handleFormSubmission}>
+                <h1>Add this plant to your garden</h1>
+                <label htmlFor="input-nickname">Plant Nickname</label>
+                <input
+                  type="text"
+                  name="nickname"
+                  id="input-nickname"
+                  placeholder="Plant Nickname"
+                  value={this.state.nickname}
+                  onChange={this.handleInputChange}
+                />
 
-          <label htmlFor="input-garden">Choose a garden:</label>
-          <select id="input-garden" name="garden">
-            <option value="none">Choose one...</option>
-            {this.state.loadedGardens &&
-              this.state.gardens.map(item => {
-                return (
-                  <option key={item._id} value={item._id}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
-          <button>Add</button>
-      </form>
+                <label htmlFor="input-file">Choose image</label>
+                <input
+                  type="file"
+                  id="input-file"
+                  name="image"
+                  placeholder="Plant Image"
+                  // value={this.state.image}
+                  onChange={this.handleImageChange}
+                />
+
+                <label htmlFor="input-garden">Choose a garden:</label>
+                <select id="input-garden" name="garden">
+                  <option value="none">Choose one...</option>
+                  {this.state.loadedGardens &&
+                    this.state.gardens.map(item => {
+                      return (
+                        <option key={item._id} value={item._id}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                </select>
+                <button>Add</button>
+              </form>
             </div>
           </>
         )}
