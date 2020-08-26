@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { loadAllTasks } from './../services/tasks';
 import { loadGardens } from './../services/garden';
+import { updateTask } from './../services/tasks';
 
 class Tasks extends Component {
   constructor() {
@@ -9,7 +10,11 @@ class Tasks extends Component {
       loaded: false,
       tasks: {},
       loadedGardens: false,
-      gardens: null
+      gardens: null,
+      filteredTasks: {},
+      loadedFiltered: false,
+      taskList: null,
+      loadedTasks: false
     };
   }
 
@@ -27,8 +32,10 @@ class Tasks extends Component {
             return date >= today;
           });
         this.setState({
-          tasks: filteredData,
-          loaded: true
+          tasks: tasks,
+          loaded: true,
+          filteredTasks: filteredData,
+          loadedFiltered: true
         });
       })
       .catch(error => {
@@ -48,149 +55,105 @@ class Tasks extends Component {
       });
   }
 
-  handleDoneCheckbox = event => {
-    const user = this.props.user._id;
-    if (event.target.checked) {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(item => item.done === 1);
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+  handleFilters = event => {
+    const garden = document.getElementById('input-garden').value;
+    const done = document.getElementById('input-done').checked;
+    const toDo = document.getElementById('input-to-do').checked;
+
+    if (done && garden === 'none') {
+      const tasksClone = [...this.state.tasks];
+      const tasks = tasksClone.filter(item => item.done === 1);
+      this.setState({
+        filteredTasks: tasks
+      });
+    } else if (toDo && garden === 'none') {
+      const tasksClone = [...this.state.tasks];
+      const tasks = tasksClone.filter(item => item.done === 0);
+      this.setState({
+        filteredTasks: tasks
+      });
+    } else if (done && garden !== 'none') {
+      const tasksClone = [...this.state.tasks];
+      const tasks = tasksClone
+        .filter(item => item.done === 1)
+        .filter(item => item.garden.name === garden);
+      this.setState({
+        filteredTasks: tasks
+      });
+    } else if (toDo && garden !== 'none') {
+      const tasksClone = [...this.state.tasks];
+      const tasks = tasksClone
+        .filter(item => item.done === 0)
+        .filter(item => item.garden.name === garden);
+      this.setState({
+        filteredTasks: tasks
+      });
     } else {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(item => item.done === 0);
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      console.log('this');
     }
   };
 
-  handleAllCheckbox = event => {
+  handleTaskCompletion = id => {
     const user = this.props.user._id;
-    if (event.target.checked) {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          this.setState({
-            tasks
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(item => item.done === 0);
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  };
-
-  handlePastCheckbox = event => {
+    const body = { id };
     const today = new Date();
     today.setDate(today.getDate() - 1);
-    const user = this.props.user._id;
-    if (event.target.checked) {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(item => {
-            const date = new Date(item.date);
-            return date < today;
+    updateTask(body)
+      .then(data => {
+        // console.log(data);
+        // this.setState({
+        //   filteredTasks: data,
+        //   loadedTasks: false
+        // });
+        loadAllTasks(user)
+          .then(data => {
+            const tasks = data.data;
+            const filteredData = tasks
+              .filter(item => item.done === 0)
+              .filter(item => {
+                const date = new Date(item.date);
+                return date >= today;
+              });
+            this.setState({
+              tasks: tasks,
+              loaded: true,
+              filteredTasks: filteredData,
+              loadedFiltered: true
+            });
+          })
+          .catch(error => {
+            console.log(error);
           });
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(item => item.done === 0);
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  };
-
-  handleGardenSelection = event => {
-    const user = this.props.user._id;
-    const garden = event.target.value;
-    if (garden !== 'none') {
-      loadAllTasks(user)
-        .then(data => {
-          const tasks = data.data;
-          const filteredData = tasks.filter(
-            item => item.garden.name === garden
-          );
-          this.setState({
-            tasks: filteredData
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
     return (
       <div>
         <h1>All Tasks</h1>
-        <form onSubmit={this.handleFormSubmission}>
-          <label htmlFor="input-done">Show Marked as Done</label>
+        <form>
+          <label htmlFor="input-done">Marked as Done</label>
           <input
-            type="checkbox"
-            name="done"
+            type="radio"
+            name="status"
             id="input-done"
             value="done"
-            onClick={this.handleDoneCheckbox}
+            onClick={this.handleFilters}
           />
-
-          <label htmlFor="input-all">Show All</label>
+          <label htmlFor="input-to-do">Marked as To-Do</label>
           <input
-            type="checkbox"
-            name="all"
-            id="input-all"
-            value="all"
-            onClick={this.handleAllCheckbox}
+            type="radio"
+            name="status"
+            id="input-to-do"
+            value="to-do"
+            onClick={this.handleFilters}
           />
-
-          <label htmlFor="input-past">Show Past Tasks</label>
-          <input type="checkbox" name="past" id="input-past" value="past" />
 
           <label htmlFor="input-garden">Choose a garden:</label>
-          <select
-            id="input-garden"
-            name="garden"
-            onChange={this.handleGardenSelection}
-          >
+          <select id="input-garden" name="garden" onChange={this.handleFilters}>
             <option value="none">Choose one...</option>
             {this.state.loadedGardens &&
               this.state.gardens.map(item => {
@@ -202,8 +165,8 @@ class Tasks extends Component {
               })}
           </select>
         </form>
-        {this.state.loaded &&
-          this.state.tasks.map(item => {
+        {this.state.loadedFiltered &&
+          this.state.filteredTasks.map(item => {
             let date = new Date(item.date);
             return (
               <div key={item._id}>
@@ -211,6 +174,9 @@ class Tasks extends Component {
                 <p>{item.garden.name}</p>
                 <p>{item.plant.nickname}</p>
                 <p>{date.toDateString()}</p>
+                <button onClick={() => this.handleTaskCompletion(item._id)}>
+                  Mark as done
+                </button>
               </div>
             );
           })}
