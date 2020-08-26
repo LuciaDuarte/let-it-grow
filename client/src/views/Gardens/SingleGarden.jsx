@@ -16,6 +16,7 @@ class SingleGarden extends Component {
       image: '',
       search: '',
       results: {},
+      noResults: false,
       loadedGarden: false,
       garden: null
     };
@@ -124,6 +125,11 @@ class SingleGarden extends Component {
     const query = this.state.search;
     searchPlantsFromAPI(query)
       .then(data => {
+        if(!data.data.length){
+          this.setState({
+            noResults: true,
+          })
+        }
         this.setState({
           results: data.data,
           loadedResults: true,
@@ -175,7 +181,12 @@ class SingleGarden extends Component {
           />
           <button>Search</button>
         </form>
-
+        {this.state.noResults && 
+          <div>
+            <img src="https://tinyurl.com/y5h27cs9" alt="" style={{width: '10em'}}/>
+            <h6>Sorry!Your search query returned no results</h6>
+            </div>
+            }
         <form onSubmit={this.handleFormSubmission}>
           {this.state.loadedResults &&
             this.state.results.map(item => {

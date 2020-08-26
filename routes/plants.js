@@ -48,7 +48,6 @@ plantsRouter.post('/new', upload.single('image'), (req, res, next) => {
 
 plantsRouter.get('/list', (req, res, next) => {
   const { garden } = req.query;
-
   Plant.find({ garden: garden })
     .then(data => {
       res.json({ data });

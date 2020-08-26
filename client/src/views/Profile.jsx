@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { loadGardens } from './../services/garden';
 import { editProfile } from './../services/authentication';
+import { Link } from 'react-router-dom';
+
 
 class Profile extends Component {
   constructor() {
@@ -61,12 +63,15 @@ class Profile extends Component {
       <div>
         <h1>User Profile</h1>
         <p>Welcome, {this.props.user.name}</p>
-        <h2>This are your gardens</h2>
+        <h2>These are your gardens</h2>
         {this.state.loadedGardens &&
           this.state.gardens.map(item => {
             return (
               <div key={item._id}>
-                <p>{item.name}</p>
+                 <Link to={`/gardens/${item._id}`}>
+                    <h3>{item.name}</h3>
+                  </Link>
+                {/* <p>{item.name}</p> */}
               </div>
             );
           })}
