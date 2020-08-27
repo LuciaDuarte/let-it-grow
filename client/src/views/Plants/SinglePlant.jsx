@@ -127,107 +127,118 @@ class SinglePlant extends Component {
       <div>
         {this.state.loadedPlant && (
           <>
-            <h1>{this.state.plant.nickname}</h1>
-          </>
-        )}
-        <div>
-          <h3>Add a new task</h3>
-          <form onSubmit={this.handleFormSubmission}>
-            <label htmlFor="input-task">Task</label>
-            <input
-              type="text"
-              name="task"
-              id="input-task"
-              placeholder="Task"
-              value={this.state.task}
-              onChange={this.handleInputChange}
-            />
+            <nav className="navbar">
+              <Link className="navbar-brand" to="/">
+                Back to the dashboard
+              </Link>
 
-            <label htmlFor="input-date">Task</label>
-            <input
-              type="date"
-              name="date"
-              id="input-date"
-              value={this.state.date}
-              onChange={this.handleInputChange}
-            />
-
-            <button>Add</button>
-          </form>
-          {this.state.loadedTasks &&
-            this.state.taskList.map(item => {
-              let date = new Date(item.date);
-              return (
-                <div key={item._id}>
-                  <p>What? {item.task}</p>
-                  <p>When? {date.toDateString()}</p>
-                  <button onClick={() => this.handleTaskCompletion(item._id)}>
-                    Mark as done
-                  </button>
-                </div>
-              );
-            })}
-        </div>
-        {this.state.loaded && this.state.loadedPlant && (
-          <>
-            <img
-              src={
-                this.state.plant.image
-                  ? this.state.plant.image
-                  : plantInfo.attributes.main_image_path.includes('/assets')
-                  ? 'https://tinyurl.com/y6tmad6q'
-                  : plantInfo.attributes.main_image_path
-                  ? plantInfo.attributes.main_image_path
-                  : 'https://tinyurl.com/y6tmad6q'
-              }
-              style={{ width: '20em' }}
-              alt={this.state.plant.nickname}
-            />
-            <p>
               <Link to={`/plants/edit/${this.state.plant._id}`}>
                 Edit Plant
               </Link>
-            </p>
-            <form onSubmit={this.handlePlantDeletion}>
-              <button>Delete Plant</button>
-            </form>
-            {this.state.loaded && (
-              <div>
-                {plantInfo.attributes.name && (
-                  <p>
-                    <strong>Common name:</strong> {plantInfo.attributes.name}
-                  </p>
-                )}
 
-                {plantInfo.attributes.binomial_name && (
-                  <p>
-                    <strong>Scientific name:</strong>{' '}
-                    {plantInfo.attributes.binomial_name}
-                  </p>
-                )}
+              <form onSubmit={this.handlePlantDeletion}>
+                <button>Delete Plant</button>
+              </form>
+            </nav>
+            <div className="title">
+              <h1>{this.state.plant.nickname}</h1>
+            </div>
+          </>
+        )}
+        {this.state.loaded && this.state.loadedPlant && (
+          <>
+            <div className="info-div">
+              <img
+                src={
+                  this.state.plant.image
+                    ? this.state.plant.image
+                    : plantInfo.attributes.main_image_path.includes('/assets')
+                    ? '/images/default-image.jpeg'
+                    : plantInfo.attributes.main_image_path
+                    ? plantInfo.attributes.main_image_path
+                    : '/images/default-image.jpeg'
+                }
+                alt={this.state.plant.nickname}
+              />
 
-                {plantInfo.attributes.description && (
-                  <p>
-                    <strong>Description:</strong>{' '}
-                    {plantInfo.attributes.description}
-                  </p>
-                )}
+              {this.state.loaded && (
+                <div className="info-div">
+                  {plantInfo.attributes.name && (
+                    <p>
+                      <strong>Common name:</strong> {plantInfo.attributes.name}
+                    </p>
+                  )}
 
-                {plantInfo.attributes.sun_requirements && (
-                  <p>
-                    <strong>Sun Requirements:</strong>{' '}
-                    {plantInfo.attributes.sun_requirements}
-                  </p>
-                )}
+                  {plantInfo.attributes.binomial_name && (
+                    <p>
+                      <strong>Scientific name:</strong>{' '}
+                      {plantInfo.attributes.binomial_name}
+                    </p>
+                  )}
 
-                {plantInfo.attributes.sowing_method && (
-                  <p>
-                    <strong>How to sow:</strong>{' '}
-                    {plantInfo.attributes.sowing_method}
-                  </p>
-                )}
-              </div>
-            )}
+                  {plantInfo.attributes.description && (
+                    <p>
+                      <strong>Description:</strong>{' '}
+                      {plantInfo.attributes.description}
+                    </p>
+                  )}
+
+                  {plantInfo.attributes.sun_requirements && (
+                    <p>
+                      <strong>Sun Requirements:</strong>{' '}
+                      {plantInfo.attributes.sun_requirements}
+                    </p>
+                  )}
+
+                  {plantInfo.attributes.sowing_method && (
+                    <p>
+                      <strong>How to sow:</strong>{' '}
+                      {plantInfo.attributes.sowing_method}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+            <div>
+              <h3>Add a new task</h3>
+              <form onSubmit={this.handleFormSubmission}>
+                <label htmlFor="input-task">Task</label>
+                <input
+                  type="text"
+                  name="task"
+                  id="input-task"
+                  placeholder="Task"
+                  value={this.state.task}
+                  onChange={this.handleInputChange}
+                />
+
+                <label htmlFor="input-date">Task</label>
+                <input
+                  type="date"
+                  name="date"
+                  id="input-date"
+                  value={this.state.date}
+                  onChange={this.handleInputChange}
+                />
+
+                <button>Add</button>
+              </form>
+              {this.state.loadedTasks &&
+                this.state.taskList.map(item => {
+                  let date = new Date(item.date);
+                  return (
+                    <div key={item._id}>
+                      <p>What? {item.task}</p>
+                      <p>When? {date.toDateString()}</p>
+                      <button
+                        onClick={() => this.handleTaskCompletion(item._id)}
+                      >
+                        Mark as done
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
           </>
         )}
       </div>

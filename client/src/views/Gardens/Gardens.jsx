@@ -60,17 +60,26 @@ class Gardens extends Component {
       <div>
         <h1>All Gardens</h1>
         {this.state.loaded && (
-          <>
-            {this.state.gardens.map(item => {
-              return (
-                <div key={item._id}>
-                  <Link to={`/gardens/${item._id}`}>
-                    <h3>{item.name}</h3>
-                  </Link>
-                </div>
-              );
-            })}
-          </>
+          <div className="garden-cards">
+            <>
+              {this.state.gardens.map(item => {
+                return (
+                  <div key={item._id} className="card card-garden">
+                    <div className="card-head">
+                      <Link to={`/gardens/${item._id}`}>
+                        <img
+                          src="/images/plants.png"
+                          alt="garden-default"
+                          className="img-fluid"
+                        />
+                        <h5 className="garden-title">{item.name}</h5>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          </div>
         )}
         <h1>Create a new Garden</h1>
         <form onSubmit={this.handleFormSubmission}>

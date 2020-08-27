@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  font-family: 'Quicksand', sans-serif;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 h1,
@@ -112,6 +118,16 @@ nav {
   border-radius: 1em;
 }
 
+.allplants-div {
+  display: flex;
+  flex-direction: column;
+  background-color: #9ebc9e;
+  width: 100%;
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 1em;
+}
+
 .tasks-div {
   display: flex;
   flex-direction: column;
@@ -122,6 +138,47 @@ nav {
   min-width: 25%;
 }
 
+.plants-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .card-garden {
+    width: 13em;
+    margin: 0 0.9em 1em;
+    padding: 0.5em;
+  }
+  .card-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    a:hover {
+      color: inherit;
+    }
+    a {
+      color: inherit;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      h5 {
+        font-size: 1.5em;
+      }
+    }
+    img {
+      max-width: 2em;
+      margin: 1em;
+    }
+  }
+  .card-body {
+    padding: 0;
+    min-height: 10em;
+    img {
+      max-width: 2em;
+      margin: 0.5em;
+    }
+  }
+}
 .garden-cards {
   display: flex;
   flex-direction: row;
@@ -141,6 +198,10 @@ nav {
     }
     a {
       color: inherit;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
       h5 {
         font-size: 1.5em;
       }
@@ -173,12 +234,143 @@ nav {
   color: darkslategrey;
   text-align: left;
   .task {
-    background-color: lightgray;
+    background-color: #ffffff;
     border-radius: 0.3em;
     padding: 0.5em;
     margin: 0.3em;
     p {
       line-height: 1em;
+    }
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  h1 {
+    margin: 1em 0;
+  }
+  .logo {
+    width: 4em;
+    margin-left: 1em;
+  }
+}
+
+.gardens-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  h2 {
+    margin-top: 0.5em;
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 0.3em;
+    margin-right: 0.2em;
+    button:active {
+      color: darkslategrey !important;
+    }
+    button:hover {
+      color: white;
+    }
+    button {
+      color: darkslategrey;
+      font-size: 1.5em;
+      align-self: baseline;
+      svg {
+        margin-bottom: 0.3em;
+      }
+    }
+  }
+}
+
+.add-plant {
+}
+
+.display-results {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  input[type='radio']:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  .results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.4em;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+  }
+  img {
+    width: 8em;
+  }
+}
+
+.add-plant-form {
+  display: flex;
+  flex-direction: column;
+  button:active {
+    color: darkslategrey !important;
+  }
+  button:hover {
+    color: darkslategrey;
+  }
+  button {
+    color: darkslategrey;
+    font-size: 1.5em;
+    align-self: baseline;
+    svg {
+      margin-bottom: 0.3em;
+      width: 0.8em;
+    }
+  }
+}
+.plant-view {
+  margin-bottom: 3em;
+}
+
+.new-plant {
+  border: 1px solid darkslategrey !important;
+  padding: 0 0.5em !important;
+  margin-left: 1em;
+}
+
+.newplant:active {
+  color: white !important;
+  background-color: darkslategrey !important;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 2em;
+}
+
+.info-div {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 2em;
+  img {
+    max-height: 15em;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    p {
+      text-align: left;
     }
   }
 }

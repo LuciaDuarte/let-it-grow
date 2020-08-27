@@ -39,12 +39,10 @@ class SignIn extends Component {
   render() {
     return (
       <div className="sign-in">
-        <h1 className="mt-5 mb-5">
-          Let It Grow{' '}
-          <span role="img" aria-label="emoji">
-            🌱
-          </span>
-        </h1>
+        <div className="brand">
+          <h1>Let It Grow </h1>
+          <img className="logo" src="/images/plant.png" alt="logo" />
+        </div>
         <form
           onSubmit={this.handleFormSubmission}
           className="form-group sign-in"

@@ -7,7 +7,7 @@ import { loadMe, signOut } from './services/authentication';
 import SignIn from './views/Authentication/SignIn';
 import SignUp from './views/Authentication/SignUp';
 import Profile from './views/Profile';
-import Gardens from './views/Gardens/Gardens';
+//import Gardens from './views/Gardens/Gardens';
 import SingleGarden from './views/Gardens/SingleGarden';
 import SinglePlant from './views/Plants/SinglePlant';
 import EditPlant from './views/Plants/EditPlant';
@@ -61,13 +61,6 @@ class App extends Component {
         <Navbar user={this.state.user} onSignOut={this.handleSignOut} />
         <Switch>
           <ProtectedRoute
-            path="/"
-            render={props => <Homeview user={this.state.user} />}
-            exact
-            authorized={this.state.user}
-            redirect="/authentication/sign-in"
-          />
-          <ProtectedRoute
             path="/authentication/sign-up"
             render={props => (
               <SignUp {...props} onUserUpdate={this.handleUserUpdate} />
@@ -88,6 +81,13 @@ class App extends Component {
             exact
           />
           <ProtectedRoute
+            path="/"
+            render={props => <Homeview user={this.state.user} />}
+            exact
+            authorized={this.state.user}
+            redirect="/authentication/sign-in"
+          />
+          <ProtectedRoute
             path="/profile"
             render={props => (
               <Profile
@@ -99,13 +99,13 @@ class App extends Component {
             authorized={this.state.user}
             redirect="/authentication/sign-in"
           />
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="/gardens"
             render={props => <Gardens user={this.state.user} />}
             exact
             authorized={this.state.user}
             redirect="/authentication/sign-in"
-          />
+          /> */}
           <ProtectedRoute
             path="/gardens/:gardenId"
             render={props => <SingleGarden {...props} user={this.state.user} />}

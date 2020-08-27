@@ -123,13 +123,18 @@ class SingleGarden extends Component {
     const query = this.state.search;
     searchPlantsFromAPI(query)
       .then(data => {
-        if(!data.data.length){
+        if (!data.data.length) {
           this.setState({
-            noResults: true,
-          })
+            noResults: true
+          });
+        } else {
+          this.setState({
+            noResults: false
+          });
         }
+        const onlyTenResults = data.data.splice(0, 10);
         this.setState({
-          results: data.data,
+          results: onlyTenResults,
           loadedResults: true,
           search: ''
         });
@@ -145,89 +150,140 @@ class SingleGarden extends Component {
 
   render() {
     return (
-      <div>
-        <Link to="/gardens">Back to all gardens</Link>
+      <div className="plant-view">
+        <nav className="navbar">
+          <Link className="navbar-brand" to="/">
+            Back to the dashboard
+          </Link>
+          <form className="form-inline" onSubmit={this.handleGardenDeletion}>
+            <button className="btn btn-danger">Delete Garden</button>
+          </form>
+        </nav>
         {this.state.loadedGarden && (
           <h1>All Plants in {this.state.garden.name}</h1>
         )}
-        <form onSubmit={this.handleGardenDeletion}>
-          <button>Delete Garden</button>
-        </form>
-        {this.state.loaded && (
-          <>
-            {this.state.plants.map(item => {
-              return (
-                <div key={item._id}>
-                  <Link to={`/plants/${item._id}`}>
-                    <h3>{item.nickname}</h3>
-                  </Link>
-                </div>
-              );
-            })}
-          </>
-        )}
-        <h1>Add a new Plant</h1>
-        <form onSubmit={this.handleSearchFormSubmission}>
-          <label htmlFor="input-search">Plant Name</label>
-          <input
-            type="text"
-            name="search"
-            id="input-search"
-            placeholder="Search Plant"
-            value={this.state.search}
-            onChange={this.handleInputChange}
-          />
-          <button>Search</button>
-        </form>
-        {this.state.noResults && 
-          <div>
-            <img src="https://tinyurl.com/y5h27cs9" alt="" style={{width: '10em'}}/>
-            <h6>Sorry!Your search query returned no results</h6>
+        <div className="allplants-div">
+          {this.state.loaded && (
+            <>
+              <div className="plants-cards">
+                {this.state.plants.map(item => {
+                  return (
+                    <div key={item._id} className="card card-garden">
+                      <div className="card-head">
+                        <Link to={`/plants/${item._id}`}>
+                          <img
+                            src="/images/plants.png"
+                            alt="garden-default"
+                            className="img-fluid"
+                          />
+                          <h5 className="garden-title">{item.nickname}</h5>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+        <div className="add-plant">
+          <h1>Add a new Plant</h1>
+          <form
+            className="form-inline add-plant-form"
+            onSubmit={this.handleSearchFormSubmission}
+          >
+            {/* <label htmlFor="input-search">Plant Name</label> */}
+            <input
+              className="form-control"
+              type="text"
+              name="search"
+              id="input-search"
+              placeholder="Search for a plant"
+              value={this.state.search}
+              onChange={this.handleInputChange}
+            />
+            <button className="btn">
+              <svg
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                class="bi bi-search"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"
+                />
+              </svg>
+            </button>
+          </form>
+          {this.state.noResults && (
+            <div>
+              <img
+                src="/images/no-results.jpg"
+                alt="no-results"
+                style={{ width: '10em' }}
+              />
+              <h6>Sorry! Your search query returned no results.</h6>
             </div>
-            }
-        <form onSubmit={this.handleFormSubmission}>
-          {this.state.loadedResults &&
-            this.state.results.map(item => {
-              return (
-                <div key={item.id}>
-                  <img
-                    src={
-                      item.attributes.main_image_path.includes('/assets')
-                        ? 'https://tinyurl.com/y6tmad6q'
-                        : item.attributes.main_image_path
-                    }
-                    style={{ width: '5em' }}
-                    alt={item.attributes.name}
-                  />
-
-                  <Link to={`/plants/search/${item.id}`}>
+          )}
+        </div>
+        <form
+          className="form-inline add-plant-form"
+          onSubmit={this.handleFormSubmission}
+        >
+          {this.state.loadedResults && (
+            <div className="display-results">
+              {this.state.results.map(item => {
+                return (
+                  <div key={item.id} className="results">
                     <label htmlFor={`input-${item.id}`}>
+                      <img
+                        src={
+                          item.attributes.main_image_path.includes('/assets')
+                            ? '/images/default-image.jpeg'
+                            : item.attributes.main_image_path
+                        }
+                        alt={item.attributes.name}
+                      />
+
                       {item.attributes.name}
                     </label>
-                  </Link>
-                  <input
-                    type="checkbox"
-                    id={`input-${item.id}`}
-                    name="apiId"
-                    value={item.id}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
-              );
-            })}
 
-          <label htmlFor="input-nickname">Plant Nickname</label>
+                    <input
+                      className="form-control"
+                      type="radio"
+                      id={`input-${item.id}`}
+                      name="apiId"
+                      value={item.id}
+                      onChange={this.handleInputChange}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <label htmlFor="input-nickname">Plant Name</label>
           <input
+            className="form-control"
             type="text"
             name="nickname"
             id="input-nickname"
-            placeholder="Plant Nickname"
+            placeholder="The name of your plant..."
             value={this.state.nickname}
             onChange={this.handleInputChange}
+            required
           />
 
           <label htmlFor="input-file">Choose image</label>
           <input
+            className="form-control"
             type="file"
             id="input-file"
             name="image"
@@ -235,7 +291,23 @@ class SingleGarden extends Component {
             // value={this.state.image}
             onChange={this.handleImageChange}
           />
-          <button>Create</button>
+          <button className="btn new-plant">
+            {' '}
+            Add{' '}
+            <svg
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              class="bi bi-plus-square-fill"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"
+              />
+            </svg>
+          </button>
         </form>
       </div>
     );

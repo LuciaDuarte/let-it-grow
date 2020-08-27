@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { loadGardens } from './../services/garden';
+import { loadGardens, createGarden } from './../services/garden';
 import { loadAllTasks } from './../services/tasks';
 
 class Homeview extends Component {
@@ -41,11 +41,49 @@ class Homeview extends Component {
             const date = new Date(item.date);
             return date >= today;
           });
-        const onlyFiveTasks = filteredData.slice(0, 5);
+        const onlyTenTasks = filteredData.slice(0, 10);
 
         this.setState({
-          tasks: onlyFiveTasks,
+          tasks: onlyTenTasks,
           loadedTasks: true
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmission = event => {
+    event.preventDefault();
+    const { name } = this.state;
+    const owner = this.props.user._id;
+    const body = { name, owner };
+    createGarden(body)
+      .then(data => {
+        this.setState({
+          name: ''
+        });
+        this.load(owner);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  load(user) {
+    loadGardens(user)
+      .then(data => {
+        const gardens = data.data;
+        this.setState({
+          gardens: gardens,
+          loaded: true
         });
       })
       .catch(error => {
@@ -56,12 +94,10 @@ class Homeview extends Component {
   render() {
     return (
       <div>
-        <h1 className="mt-5">
-          Let It Grow{' '}
-          <span role="img" aria-label="emoji">
-            🌱
-          </span>
-        </h1>
+        <div className="brand">
+          <h1>Let It Grow </h1>
+          <img className="logo" src="/images/plant.png" alt="logo" />
+        </div>
         {this.props.user && (
           <>
             <h2>Welcome, {this.props.user.name}</h2>
@@ -74,22 +110,51 @@ class Homeview extends Component {
             </div>
             <div className="homepage">
               <div className="gardens-div">
-                <Link to="/gardens">
-                  {' '}
+                <div className="gardens-header">
                   <h2 className="dashboard">My gardens</h2>
-                </Link>
+                  <form
+                    className="form-group"
+                    onSubmit={this.handleFormSubmission}
+                  >
+                    <label htmlFor="input-name"></label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="name"
+                      id="input-name"
+                      placeholder="Add a new garden..."
+                      value={this.state.name}
+                      onChange={this.handleInputChange}
+                    />
+                    <button className="btn">
+                      <svg
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 16 16"
+                        class="bi bi-plus-square-fill"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"
+                        />
+                      </svg>
+                    </button>
+                  </form>
+                </div>
                 {this.state.loaded && (
                   <div className="garden-cards">
                     {this.state.gardens.map(item => {
                       return (
                         <div key={item._id} className="card card-garden">
                           <div className="card-head">
-                            <img
-                              src="/images/plants.png"
-                              alt="garden-default"
-                              className="img-fluid"
-                            />
                             <Link to={`/gardens/${item._id}`}>
+                              <img
+                                src="/images/plants.png"
+                                alt="garden-default"
+                                className="img-fluid"
+                              />
                               <h5 className="garden-title">{item.name}</h5>
                             </Link>
                           </div>
@@ -97,12 +162,12 @@ class Homeview extends Component {
                             {item.plants.map(item => {
                               return (
                                 <>
-                                  <img
-                                    src="/images/plant-vase.png"
-                                    alt="garden-default"
-                                    className="img-fluid"
-                                  />
                                   <Link to={`/plants/${item._id}`}>
+                                    <img
+                                      src="/images/plant-vase.png"
+                                      alt="garden-default"
+                                      className="img-fluid"
+                                    />
                                     <h6
                                       key={item._id}
                                       className="card-subtitle mb-2 text-muted"
