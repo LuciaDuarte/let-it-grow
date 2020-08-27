@@ -230,41 +230,41 @@ class SinglePlant extends Component {
 
                   <button className="btn btn-light">Add</button>
                 </form>
-                {this.state.loadedTasks && (
-                  <div className="tasks-list">
-                    {this.state.taskList.map(item => {
-                      let date = new Date(item.date);
-                      return (
-                        <div className="task" key={item._id}>
-                          <p>What? {item.task}</p>
-                          <p>When? {date.toDateString()}</p>
-                          <button
-                            className="btn btn-light"
-                            onClick={() => this.handleTaskCompletion(item._id)}
-                          >
-                            {' '}
-                            Mark as done
-                            <svg
-                              width="1em"
-                              height="1em"
-                              viewBox="0 0 16 16"
-                              class="bi bi-check"
-                              fill="currentColor"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
             </>
+          )}
+          {this.state.loadedTasks && (
+            <div className="tasks-list">
+              {this.state.taskList.map(item => {
+                let date = new Date(item.date);
+                return (
+                  <div className="task" key={item._id}>
+                    <p>What? {item.task}</p>
+                    <p>When? {date.toDateString()}</p>
+                    <button
+                      className="btn btn-light"
+                      onClick={() => this.handleTaskCompletion(item._id)}
+                    >
+                      {' '}
+                      Mark as done
+                      <svg
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 16 16"
+                        class="bi bi-check"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
       </div>

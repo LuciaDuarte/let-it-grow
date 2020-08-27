@@ -332,7 +332,7 @@ nav {
 .results-search {
   display: flex;
   flex-direction: row;
-  max-width: 10em;
+  max-width: 15em;
   margin: 1em;
   a {
     display: flex;
@@ -476,4 +476,17 @@ nav {
   display: flex;
   flex-direction: column;
   align-self: center;
+}
+
+.all-tasks-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  small {
+    align-self: center;
+  }
+  input {
+    margin: 1em;
+  }
 }

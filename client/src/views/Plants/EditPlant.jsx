@@ -142,9 +142,13 @@ class EditPlant extends Component {
           </>
         )}
 
-        <form onSubmit={this.handleSearchFormSubmission}>
-          <label htmlFor="input-search">Plant Name</label>
+        <form
+          className="form-inline add-plant-form"
+          onSubmit={this.handleSearchFormSubmission}
+        >
+          {/* <label htmlFor="input-search">Plant Name</label> */}
           <input
+            className="form-control"
             type="text"
             name="search"
             id="input-search"
@@ -152,42 +156,64 @@ class EditPlant extends Component {
             value={this.state.search}
             onChange={this.handleInputChange}
           />
-          <button>Search</button>
+          <button className="btn">
+            <svg
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              class="bi bi-search"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"
+              />
+            </svg>
+          </button>
         </form>
 
-        <form onSubmit={this.handlePlantEditing}>
-          {this.state.loadedResults &&
-            this.state.results.map(item => {
-              return (
-                <div key={item.id}>
-                  <img
-                    src={
-                      item.attributes.main_image_path.includes('/assets')
-                        ? 'https://tinyurl.com/y6tmad6q'
-                        : item.attributes.main_image_path
-                    }
-                    alt={this.state.plant}
-                    style={{ width: '5em' }}
-                  />
+        <form className="form-inline" onSubmit={this.handlePlantEditing}>
+          {this.state.loadedResults && (
+            <div className="display-results">
+              {this.state.results.map(item => {
+                return (
+                  <div className="results" key={item.id}>
+                    <img
+                      src={
+                        item.attributes.main_image_path.includes('/assets')
+                          ? '/images/default-image.jpeg'
+                          : item.attributes.main_image_path
+                      }
+                      alt={this.state.plant}
+                      style={{ width: '5em' }}
+                    />
 
-                  <Link to={`/plants/search/${item.id}`}>
-                    <label htmlFor={`input-${item.id}`}>
-                      {item.attributes.name}
-                    </label>
-                  </Link>
-                  <input
-                    type="checkbox"
-                    id={`input-${item.id}`}
-                    name="apiId"
-                    value={item.id}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
-              );
-            })}
-
+                    <Link to={`/plants/search/${item.id}`}>
+                      <label htmlFor={`input-${item.id}`}>
+                        {item.attributes.name}
+                      </label>
+                    </Link>
+                    <input
+                      className="form-control"
+                      type="checkbox"
+                      id={`input-${item.id}`}
+                      name="apiId"
+                      value={item.id}
+                      onChange={this.handleInputChange}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <label htmlFor="input-nickname">Plant Nickname</label>
           <input
+            className="form-control"
             type="text"
             name="nickname"
             id="input-nickname"
@@ -199,6 +225,7 @@ class EditPlant extends Component {
 
           <label htmlFor="input-file">Choose image</label>
           <input
+            className="form-control"
             type="file"
             id="input-file"
             name="image"

@@ -130,47 +130,70 @@ class Tasks extends Component {
     return (
       <div>
         <h1>All Tasks</h1>
-        <form>
-          <label htmlFor="input-done">Marked as Done</label>
-          <input
-            type="radio"
-            name="status"
-            id="input-done"
-            value="done"
-            onClick={this.handleFilters}
-          />
-          <label htmlFor="input-to-do">Marked as To-Do</label>
-          <input
-            type="radio"
-            name="status"
-            id="input-to-do"
-            value="to-do"
-            onClick={this.handleFilters}
-          />
+        <div className="all-tasks-div">
+          <small>Search Filters</small>
+          <form className="form-inline">
+            <label htmlFor="input-done">Marked as Done</label>
+            <input
+              className="form-control"
+              type="radio"
+              name="status"
+              id="input-done"
+              value="done"
+              onClick={this.handleFilters}
+            />
+            <label htmlFor="input-to-do">Marked as To-Do</label>
+            <input
+              className="form-control"
+              type="radio"
+              name="status"
+              id="input-to-do"
+              value="to-do"
+              onClick={this.handleFilters}
+            />
 
-          <label htmlFor="input-garden">Choose a garden:</label>
-          <select id="input-garden" name="garden" onChange={this.handleFilters}>
-            <option value="none">Choose one...</option>
-            {this.state.loadedGardens &&
-              this.state.gardens.map(item => {
-                return (
-                  <option key={item._id} value={item.name}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
-        </form>
+            <label htmlFor="input-garden">Choose a garden:</label>
+            <select
+              className="form-control"
+              id="input-garden"
+              name="garden"
+              onChange={this.handleFilters}
+            >
+              <option value="none">Choose one...</option>
+              {this.state.loadedGardens &&
+                this.state.gardens.map(item => {
+                  return (
+                    <option key={item._id} value={item.name}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+            </select>
+          </form>
+        </div>
         {this.state.loadedFiltered &&
           this.state.filteredTasks.map(item => {
             let date = new Date(item.date);
             return (
               <div key={item._id}>
                 <h1>{item.task}</h1>
-                <p>{item.garden.name}</p>
-                <p>{item.plant.nickname}</p>
-                <p>{date.toDateString()}</p>
-                <button onClick={() => this.handleTaskCompletion(item._id)}>
+                <p>
+                  {' '}
+                  <strong>Garden Name: </strong>
+                  {item.garden.name}
+                </p>
+                <p>
+                  {' '}
+                  <strong>Plant Name:</strong> {item.plant.nickname}
+                </p>
+                <p>
+                  {' '}
+                  <strong> When:</strong> {date.toDateString()}
+                </p>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.handleTaskCompletion(item._id)}
+                >
                   {item.done === 0 ? 'Mark as done' : 'Mark as to-do'}
                 </button>
               </div>
