@@ -92,39 +92,49 @@ class SearchedPlant extends Component {
     const plant = this.state.plant;
     return (
       <div>
-        <Link to={`/search`}>Go back to search</Link>
+        <nav className="navbar">
+          <Link className="navbar-brand" to="/">
+            Back to the dashboard
+          </Link>
+
+          <Link className="navbar-brand" to={`/search`}>
+            Back to search
+          </Link>
+        </nav>
         {this.state.loaded && (
           <>
-            {plant.attributes.name && <h1>{plant.attributes.name}</h1>}
-            <div className="generalinfo">
+            <div className="title">
+              {plant.attributes.name && <h1>{plant.attributes.name}</h1>}
+            </div>
+            <div className="search-plant-div">
               <img
                 src={
                   plant.attributes.main_image_path.includes('/assets')
-                    ? 'https://tinyurl.com/y6tmad6q'
+                    ? '/images/default-image.jpeg'
                     : plant.attributes.main_image_path
                 }
                 alt={plant.attributes.name}
               />
-              {plant.attributes.description && <h1>General Information</h1>}
-              {plant.attributes.description && (
-                <p>{plant.attributes.description}</p>
-              )}
-              <br></br>
-              {plant.attributes.common_names && (
-                <p>
-                  <strong>Common names:</strong>{' '}
-                  {plant.attributes.common_names[0]},
-                  {plant.attributes.common_names[1]}
-                </p>
-              )}
-              {plant.attributes.binomial_name && (
-                <p>
-                  <strong>Scientific name:</strong>{' '}
-                  {plant.attributes.binomial_name}
-                </p>
-              )}
+              <div className="single-search-plant">
+                {plant.attributes.description && <h1>General Information</h1>}
+                {plant.attributes.description && (
+                  <p>{plant.attributes.description}</p>
+                )}
 
-              <div className="growinginfo">
+                {plant.attributes.common_names && (
+                  <p>
+                    <strong>Common names:</strong>{' '}
+                    {plant.attributes.common_names[0]},
+                    {plant.attributes.common_names[1]}
+                  </p>
+                )}
+                {plant.attributes.binomial_name && (
+                  <p>
+                    <strong>Scientific name:</strong>{' '}
+                    {plant.attributes.binomial_name}
+                  </p>
+                )}
+
                 {plant.attributes.sun_requirements && (
                   <h1>Growing Specifics</h1>
                 )}
@@ -159,43 +169,69 @@ class SearchedPlant extends Component {
                   </p>
                 )}
               </div>
-
-              <form onSubmit={this.handleFormSubmission}>
+              <div className="add-plant-div">
                 <h1>Add this plant to your garden</h1>
-                <label htmlFor="input-nickname">Plant Nickname</label>
-                <input
-                  type="text"
-                  name="nickname"
-                  id="input-nickname"
-                  placeholder="Plant Nickname"
-                  value={this.state.nickname}
-                  onChange={this.handleInputChange}
-                />
+                <form
+                  className="form-group"
+                  onSubmit={this.handleFormSubmission}
+                >
+                  <label htmlFor="input-nickname">Plant Nickname</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="nickname"
+                    id="input-nickname"
+                    placeholder="Plant Nickname"
+                    value={this.state.nickname}
+                    onChange={this.handleInputChange}
+                  />
 
-                <label htmlFor="input-file">Choose image</label>
-                <input
-                  type="file"
-                  id="input-file"
-                  name="image"
-                  placeholder="Plant Image"
-                  // value={this.state.image}
-                  onChange={this.handleImageChange}
-                />
+                  <label htmlFor="input-file">Choose image</label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    id="input-file"
+                    name="image"
+                    placeholder="Plant Image"
+                    // value={this.state.image}
+                    onChange={this.handleImageChange}
+                  />
 
-                <label htmlFor="input-garden">Choose a garden:</label>
-                <select id="input-garden" name="garden">
-                  <option value="none">Choose one...</option>
-                  {this.state.loadedGardens &&
-                    this.state.gardens.map(item => {
-                      return (
-                        <option key={item._id} value={item._id}>
-                          {item.name}
-                        </option>
-                      );
-                    })}
-                </select>
-                <button>Add</button>
-              </form>
+                  <label htmlFor="input-garden">Choose a garden:</label>
+                  <select
+                    className="form-control"
+                    id="input-garden"
+                    name="garden"
+                  >
+                    <option value="none">Choose one...</option>
+                    {this.state.loadedGardens &&
+                      this.state.gardens.map(item => {
+                        return (
+                          <option key={item._id} value={item._id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <button className="btn new-plant">
+                    {' '}
+                    Add{' '}
+                    <svg
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 16 16"
+                      class="bi bi-plus-square-fill"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </div>
             </div>
           </>
         )}

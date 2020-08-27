@@ -20,10 +20,10 @@ class Search extends Component {
     const query = this.state.search;
     searchPlantsFromAPI(query)
       .then(data => {
-        if(!data.data.length){
+        if (!data.data.length) {
           this.setState({
-            noResults: true,
-          })
+            noResults: true
+          });
         }
         this.setState({
           search: '',
@@ -51,43 +51,69 @@ class Search extends Component {
       <div>
         <h1>Search for any plant</h1>
         <p>And we will see if we have it on our database</p>
-        <form onSubmit={this.handleFormSubmission} >
-          <label htmlFor="input-search">Plant Name</label>
-          <input
-            type="text"
-            name="search"
-            id="input-search"
-            value={this.state.search}
-            onChange={this.handleInputChange}
+        <div className="search-div">
+          <form
+            className="form-group search"
+            onSubmit={this.handleFormSubmission}
+          >
+            {/* <label htmlFor="input-search">Plant Name</label> */}
+            <input
+              className="form-control"
+              type="text"
+              name="search"
+              id="input-search"
+              placeholder="Plant name"
+              value={this.state.search}
+              onChange={this.handleInputChange}
             />
-          <button>Search</button>
-      
-        </form>
-        {this.state.noResults && 
+            <button className="btn">
+              <svg
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                class="bi bi-search"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"
+                />
+              </svg>
+            </button>
+          </form>
+        </div>
+        {this.state.noResults && (
           <div>
-            <img src="https://tinyurl.com/y5h27cs9" alt="" style={{width: '10em'}}/>
-            <h6>Sorry!Your search query returned no results</h6>
-            </div>
-            }
-        {this.state.loaded &&
-         this.state.results.map(item => {
-            return (
-              <div key={item.id}>
-         
-                <Link to={`/search/${item.id}`}>
-                  <h1>{item.attributes.name}</h1>
-                  <img
-                    src={
-                      item.attributes.main_image_path.includes('/assets')
-                      ? 'https://tinyurl.com/y6tmad6q'
-                      : item.attributes.main_image_path
-                    }
-                    alt={item.attributes.name}
+            <img src="images/no-results.jpg" alt="" style={{ width: '10em' }} />
+            <h6>Sorry! Your search query returned no results.</h6>
+          </div>
+        )}
+        {this.state.loaded && (
+          <div className="display-results-search">
+            {this.state.results.map(item => {
+              return (
+                <div className="results-search" key={item.id}>
+                  <Link to={`/search/${item.id}`}>
+                    <img
+                      src={
+                        item.attributes.main_image_path.includes('/assets')
+                          ? '/images/default-image.jpeg'
+                          : item.attributes.main_image_path
+                      }
+                      alt={item.attributes.name}
                     />
-                </Link>    
-              </div>
-            );
-          })}
+                    <h1>{item.attributes.name}</h1>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
