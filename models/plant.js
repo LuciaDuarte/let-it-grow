@@ -3,6 +3,10 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
+  nickname: {
+    type: String,
+    required: true
+  },
   garden: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Garden'
@@ -11,7 +15,6 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  nickname: String,
   apiId: {
     type: String
   },

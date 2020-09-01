@@ -3,7 +3,10 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  task: String,
+  task: {
+    type: String,
+    required: true
+  },
   plant: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Plant'
@@ -20,7 +23,10 @@ const schema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  date: Date
+  date: {
+    type: Date,
+    required: true
+  }
 });
 
 module.exports = mongoose.model('Task', schema);
