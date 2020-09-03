@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { loadGardens, createGarden } from './../services/garden';
-import { loadAllTasks } from './../services/tasks';
+import { loadAllTasks, updateTask } from './../services/tasks';
 
 class Homeview extends Component {
   constructor() {
@@ -29,9 +29,12 @@ class Homeview extends Component {
         console.log(error);
       });
 
+    this.loadTasks(user);
+  }
+
+  loadTasks(user) {
     const today = new Date();
     today.setDate(today.getDate() - 1);
-
     loadAllTasks(user)
       .then(data => {
         const tasks = data.data;
@@ -90,6 +93,24 @@ class Homeview extends Component {
         console.log(error);
       });
   }
+
+  handleTaskCompletion = id => {
+    const user = this.props.user._id;
+    const body = { id };
+    updateTask(body)
+      .then(data => {
+        this.setState({
+          loadedTasks: false
+        });
+        this.loadTasks(user);
+      })
+      .catch(error => {
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
+      });
+  };
 
   render() {
     return (
@@ -204,6 +225,28 @@ class Homeview extends Component {
                             <p>
                               {item.plant.nickname} at {item.garden.name}
                             </p>
+                            <button
+                              className="btn btn-dark"
+                              onClick={() =>
+                                this.handleTaskCompletion(item._id)
+                              }
+                            >
+                              {' '}
+                              Mark as done
+                              <svg
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 16 16"
+                                className="bi bi-check"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"
+                                />
+                              </svg>
+                            </button>
                           </div>
                         );
                       })}
