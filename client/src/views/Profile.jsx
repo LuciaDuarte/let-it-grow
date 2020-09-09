@@ -3,14 +3,11 @@ import { loadGardens } from './../services/garden';
 import { editProfile } from './../services/authentication';
 import { Link } from 'react-router-dom';
 
-
 class Profile extends Component {
   constructor() {
     super();
     this.state = {
       loadedGardens: false,
-      loadedPlants: false,
-      plants: null,
       gardens: null,
       name: '',
       email: ''
@@ -41,7 +38,13 @@ class Profile extends Component {
 
   handleFormSubmission = event => {
     event.preventDefault();
-    const { name, email } = this.state;
+    let { name, email } = this.state;
+    if (!name) {
+      name = this.props.user.name;
+    }
+    if (!email) {
+      email = this.props.user.email;
+    }
     const id = this.props.user._id;
     const body = { name, email, id };
     editProfile(body)
@@ -54,51 +57,78 @@ class Profile extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   };
 
   render() {
     return (
       <div>
-        <h1>User Profile</h1>
-        <p>Welcome, {this.props.user.name}</p>
-        <h2>These are your gardens</h2>
-        {this.state.loadedGardens &&
-          this.state.gardens.map(item => {
-            return (
-              <div key={item._id}>
-                 <Link to={`/gardens/${item._id}`}>
-                    <h3>{item.name}</h3>
-                  </Link>
-                {/* <p>{item.name}</p> */}
+        <div className="profile">
+          <div className="brand">
+            <h1>Let It Grow </h1>
+            <img className="logo" src="/images/plant.png" alt="logo" />
+          </div>
+          <h2>Welcome, {this.props.user.name}</h2>
+          <h3>These are your gardens</h3>
+        </div>
+        <div className="homepage">
+          <div className="gardens-div">
+            <div className="gardens-header">
+              <h2 className="dashboard">My gardens</h2>
+            </div>
+
+            {this.state.loadedGardens && (
+              <div className="garden-cards">
+                {this.state.gardens.map(item => {
+                  return (
+                    <div key={item._id} className="card card-garden">
+                      <div className="card-head">
+                        <Link to={`/gardens/${item._id}`}>
+                          <img
+                            src="/images/plants.png"
+                            alt="garden-default"
+                            className="img-fluid"
+                          />
+                          <h5 className="garden-title">{item.name}</h5>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        <h2>Edit profile</h2>
-        <form onSubmit={this.handleFormSubmission}>
-          <label htmlFor="input-name">Username</label>
-          <input
-            id="input-name"
-            type="text"
-            name="name"
-            placeholder="name"
-            value={this.state.name}
-            onChange={this.handleInputChange}
-          />
+            )}
+          </div>
+          <div className="profile-div">
+            <h2 className="dashboard">Edit profile</h2>
+            <form onSubmit={this.handleFormSubmission}>
+              <label htmlFor="input-name">Username</label>
+              <input
+                id="input-name"
+                type="text"
+                name="name"
+                placeholder={this.props.user.name}
+                value={this.state.name}
+                onChange={this.handleInputChange}
+              />
 
-          <label htmlFor="input-email">Email</label>
-          <input
-            id="input-email"
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleInputChange}
-          />
+              <label htmlFor="input-email">Email</label>
+              <input
+                id="input-email"
+                type="email"
+                name="email"
+                placeholder={this.props.user.email}
+                value={this.state.email}
+                onChange={this.handleInputChange}
+              />
 
-          <button>Edit Profile</button>
-        </form>
+              <button className="btn btn-dark">Edit Profile</button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
