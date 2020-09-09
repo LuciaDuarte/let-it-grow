@@ -12,38 +12,38 @@ class EditPlant extends Component {
   constructor() {
     super();
     this.state = {
+      loadedFromAPI: false,
+      infoFromAPI: {},
+      loadedPlant: false,
+      plant: null,
+      loadedResults: false,
+      results: {},
       apiId: '',
       nickname: '',
       image: '',
-      loaded: false,
       search: '',
-      results: {},
-      error: null,
-      plant: null,
-      plantInfo: {},
-      task: '',
-      date: '',
-      loadedTasks: false,
-      taskList: null,
-      loadedPlant: false
+      error: null
     };
   }
 
-  load() {
-    const apiId = this.state.plant.apiId;
-    if (apiId) {
-      loadPlantFromAPI(apiId)
-        .then(data => {
-          this.setState({
-            plantInfo: data.data,
-            loaded: true
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
+  // load() {
+  //   const apiId = this.state.plant.apiId;
+  //   if (apiId) {
+  //     loadPlantFromAPI(apiId)
+  //       .then(data => {
+  //         this.setState({
+  //           infoFromAPI: data.data,
+  //           loadedFromAPI: true
+  //         });
+  //       })
+  //       .catch(error => {
+  //         const serverError = error.response.data.error;
+  //         this.setState({
+  //           error: serverError
+  //         });
+  //       });
+  //   }
+  // }
 
   componentDidMount() {
     const plant = this.props.match.params.plantId;
@@ -54,10 +54,28 @@ class EditPlant extends Component {
           plant: plant,
           loadedPlant: true
         });
-        this.load();
+        const apiId = this.state.plant.apiId;
+        if (apiId) {
+          loadPlantFromAPI(apiId)
+            .then(data => {
+              this.setState({
+                infoFromAPI: data.data,
+                loadedFromAPI: true
+              });
+            })
+            .catch(error => {
+              const serverError = error.response.data.error;
+              this.setState({
+                error: serverError
+              });
+            });
+        }
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   }
 
@@ -65,6 +83,13 @@ class EditPlant extends Component {
     const image = event.target.files[0];
     this.setState({
       image
+    });
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
     });
   };
 
@@ -80,59 +105,72 @@ class EditPlant extends Component {
           search: ''
         });
       })
-      .catch(error => {});
+      .catch(error => {
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
+      });
   };
 
   handlePlantEditing = event => {
     event.preventDefault();
+
     const id = this.props.match.params.plantId;
     const { apiId, nickname } = this.state;
     const image = this.state.image;
-
     const body = { apiId, nickname, image };
     editPlant(id, body)
       .then(data => {
         this.props.history.push(`/plants/${id}`);
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   };
 
   handlePlantDeletion = event => {
     event.preventDefault();
-    const id = this.props.match.params.plantId;
 
-    deletePlant(id)
-      .then(() => {
-        this.props.history.push('/');
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    const plantId = this.props.match.params.plantId;
+    const gardenId = this.state.plant.garden;
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+    const confirmDeletion = window.confirm(
+      'Are you sure you want to delete this plant?'
+    );
+    if (confirmDeletion === true) {
+      deletePlant(plantId)
+        .then(() => {
+          this.props.history.push(`/gardens/${gardenId}`);
+        })
+        .catch(error => {
+          const serverError = error.response.data.error;
+          this.setState({
+            error: serverError
+          });
+        });
+    }
   };
 
   render() {
-    const plantInfo = this.state.plantInfo;
+    const infoFromAPI = this.state.infoFromAPI;
     return (
       <div>
         <h1>Edit Plant</h1>
-        {this.state.loadedPlant && this.state.loaded && (
+        {this.state.loadedPlant && this.state.loadedFromAPI && (
           <>
             <img
               src={
-                this.state.image
-                  ? this.state.image
-                  : plantInfo.attributes.main_image_path
-                  ? plantInfo.attributes.main_image_path
-                  : 'https://tinyurl.com/y6tmad6q'
+                this.state.plant.image
+                  ? this.state.plant.image
+                  : infoFromAPI.attributes.main_image_path.includes('/assets')
+                  ? '/images/default-image.jpeg'
+                  : infoFromAPI.attributes.main_image_path
+                  ? infoFromAPI.attributes.main_image_path
+                  : '/images/default-image.jpeg'
               }
               alt={this.state.plant}
               style={{ width: '20em' }}
@@ -146,7 +184,7 @@ class EditPlant extends Component {
           className="form-inline add-plant-form"
           onSubmit={this.handleSearchFormSubmission}
         >
-          {/* <label htmlFor="input-search">Plant Name</label> */}
+          <label htmlFor="input-search"></label>
           <input
             className="form-control"
             type="text"
@@ -211,28 +249,31 @@ class EditPlant extends Component {
               })}
             </div>
           )}
-          <label htmlFor="input-nickname">Plant Nickname</label>
-          <input
-            className="form-control"
-            type="text"
-            name="nickname"
-            id="input-nickname"
-            placeholder="Plant Nickname"
-            value={this.state.nickname}
-            onChange={this.handleInputChange}
-            required
-          />
+          {this.state.loadedPlant && (
+            <>
+              <label htmlFor="input-nickname">Plant Nickname</label>
+              <input
+                className="form-control"
+                type="text"
+                name="nickname"
+                id="input-nickname"
+                placeholder={this.state.plant.nickname}
+                value={this.state.nickname}
+                onChange={this.handleInputChange}
+                required
+              />
 
-          <label htmlFor="input-file">Choose image</label>
-          <input
-            className="form-control"
-            type="file"
-            id="input-file"
-            name="image"
-            placeholder="Plant Image"
-            // value={this.state.image}
-            onChange={this.handleImageChange}
-          />
+              <label htmlFor="input-file">Choose image</label>
+              <input
+                className="form-control"
+                type="file"
+                id="input-file"
+                name="image"
+                placeholder="Plant Image"
+                onChange={this.handleImageChange}
+              />
+            </>
+          )}
           <button>Edit</button>
         </form>
         <form onSubmit={this.handlePlantDeletion}>

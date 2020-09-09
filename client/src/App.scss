@@ -128,6 +128,7 @@ nav {
   border-radius: 1em;
 }
 
+.profile-div,
 .tasks-div {
   display: flex;
   flex-direction: column;
@@ -494,5 +495,24 @@ nav {
   }
   input {
     margin: 1em;
+  }
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-div {
+  form {
+    display: flex;
+    flex-direction: column;
+    label {
+      color: white;
+      text-align: left;
+    }
+    input {
+      margin-bottom: 0.6em;
+    }
   }
 }

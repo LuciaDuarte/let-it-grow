@@ -169,7 +169,7 @@ class SinglePlant extends Component {
             </div>
 
             <div className="single-plant">
-              {this.state.loadedFromAPI && (
+              {(this.state.loadedFromAPI && (
                 <>
                   <div className="info-div">
                     <img
@@ -223,6 +223,12 @@ class SinglePlant extends Component {
                         </p>
                       )}
                     </div>
+                  </div>
+                </>
+              )) || (
+                <>
+                  <div className="spinner-border ml-5" role="status">
+                    <span className="sr-only ml-5">Loading...</span>
                   </div>
                 </>
               )}

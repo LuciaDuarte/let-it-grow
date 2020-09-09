@@ -26,9 +26,11 @@ class Homeview extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
-
     this.loadTasks(user);
   }
 
@@ -52,7 +54,10 @@ class Homeview extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   }
 
@@ -76,7 +81,10 @@ class Homeview extends Component {
         this.load(owner);
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   };
 
@@ -90,7 +98,10 @@ class Homeview extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        const serverError = error.response.data.error;
+        this.setState({
+          error: serverError
+        });
       });
   }
 
