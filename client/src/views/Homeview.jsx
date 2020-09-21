@@ -237,7 +237,7 @@ class Homeview extends Component {
                               {item.plant.nickname} at {item.garden.name}
                             </p>
                             <button
-                              className="btn btn-dark"
+                              className="btn btn-secondary"
                               onClick={() =>
                                 this.handleTaskCompletion(item._id)
                               }

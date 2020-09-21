@@ -125,7 +125,7 @@ class Profile extends Component {
                 onChange={this.handleInputChange}
               />
 
-              <button className="btn btn-dark">Edit Profile</button>
+              <button className="btn btn-secondary">Edit Profile</button>
             </form>
           </div>
         </div>

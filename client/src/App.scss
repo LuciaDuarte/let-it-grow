@@ -128,6 +128,7 @@ nav {
   border-radius: 1em;
 }
 
+.add-plant-div,
 .profile-div,
 .tasks-div {
   display: flex;
@@ -137,6 +138,28 @@ nav {
   padding: 1em;
   border-radius: 1em;
   min-width: 25%;
+}
+
+.add-plant-div {
+  .species-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    button {
+      margin: 0;
+    }
+  }
+  form {
+    label {
+      text-align: left;
+    }
+    button {
+      font-size: 1.1em;
+      align-self: center;
+      padding: 6px 25px;
+    }
+  }
 }
 
 .plants-cards {
@@ -296,29 +319,29 @@ nav {
   }
 }
 
-.add-plant {
-}
-
 .display-results {
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 7em;
   input[type='radio']:focus {
     outline: none;
     box-shadow: none;
   }
   .results {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    margin: 0.4em;
+    margin: 0.2em;
   }
   label {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-right: 1em;
   }
   img {
-    width: 8em;
+    width: 7em;
+    margin-right: 1em;
   }
 }
 
@@ -351,22 +374,17 @@ nav {
 .add-plant-form {
   display: flex;
   flex-direction: column;
-  button:active {
-    color: darkslategrey !important;
-  }
-  button:hover {
-    color: darkslategrey;
-  }
-  button {
-    color: darkslategrey;
-    font-size: 1.5em;
-    align-self: baseline;
-    svg {
-      margin-bottom: 0.3em;
-      width: 0.8em;
-    }
+}
+
+.plant-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  input {
+    margin: 0.5em;
   }
 }
+
 .plant-view {
   margin-bottom: 3em;
 }
@@ -392,24 +410,21 @@ nav {
 
 .info-div {
   display: flex;
-  justify-content: flex-start;
-  margin-left: 2em;
-  img {
-    max-height: 15em;
-  }
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    p {
-      text-align: left;
-    }
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 3em 1em;
+  p {
+    text-align: left;
+    line-height: 1.3em;
   }
 }
 
 .single-plant {
   display: flex;
   flex-direction: row;
+  img {
+    max-height: 15em;
+  }
 }
 
 .search-plant-div {
@@ -448,11 +463,6 @@ nav {
   color: white;
   input {
     margin-bottom: 1em;
-  }
-  button {
-    margin-top: 1em;
-    color: white !important;
-    outline-color: white !important;
   }
 }
 
@@ -515,4 +525,54 @@ nav {
       margin-bottom: 0.6em;
     }
   }
+}
+
+.btn-letitgrow {
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+  color: #386151;
+  font-size: 1.1em;
+  padding: 0.3em;
+  background-color: #ffffff;
+  border: solid #386151 1px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-letitgrow:hover {
+  background: #386151;
+  color: #ffffff;
+  border: solid #386151 1px;
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+  text-decoration: none;
+}
+
+.btn-letitgrow-inverted {
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+  color: #ffffff;
+  font-size: 1.1em;
+  padding: 0.3em;
+  background-color: #386151;
+  border: solid #ffffff 1px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-letitgrow-inverted:hover {
+  background: #ffffff;
+  color: #386151;
+  border: solid #386151 1px;
+  -webkit-border-radius: 0.2em;
+  -moz-border-radius: 0.2em;
+  border-radius: 0.2em;
+  text-decoration: none;
 }

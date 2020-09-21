@@ -68,7 +68,7 @@ class SignIn extends Component {
             required
           />
 
-          <button className="btn btn-outline-success">Sign In</button>
+          <button className="btn-letitgrow">Sign In</button>
           <Link to="/authentication/sign-up">
             <small>Don't have an account? Sign Up</small>
           </Link>

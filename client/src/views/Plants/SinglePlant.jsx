@@ -7,6 +7,7 @@ import {
   updateTask
 } from './../../services/tasks';
 import { Link } from 'react-router-dom';
+import EditPlantModal from './../../components/EditPlantModal';
 
 class SinglePlant extends Component {
   constructor() {
@@ -20,6 +21,7 @@ class SinglePlant extends Component {
       loadedTasks: false,
       task: '',
       date: '',
+      noAPIid: false,
       error: null
     };
   }
@@ -42,15 +44,26 @@ class SinglePlant extends Component {
         });
 
         const apiId = this.state.plant.apiId;
+
         if (apiId) {
-          return loadPlantFromAPI(apiId);
+          return loadPlantFromAPI(apiId)
+            .then(data => {
+              this.setState({
+                infoFromAPI: data.data,
+                loadedFromAPI: true
+              });
+            })
+            .catch(error => {
+              const serverError = error.response.data.error;
+              this.setState({
+                error: serverError
+              });
+            });
+        } else {
+          this.setState({
+            noAPIid: true
+          });
         }
-      })
-      .then(data => {
-        this.setState({
-          infoFromAPI: data.data,
-          loadedFromAPI: true
-        });
       })
       .catch(error => {
         const serverError = error.response.data.error;
@@ -152,9 +165,9 @@ class SinglePlant extends Component {
           </Link>
           {this.state.loadedPlant && (
             <>
-              <Link to={`/plants/edit/${this.state.plant._id}`}>
+              {/* <Link to={`/plants/edit/${this.state.plant._id}`}>
                 Edit Plant
-              </Link>
+              </Link> */}
 
               <form className="form-inline" onSubmit={this.handlePlantDeletion}>
                 <button className="btn btn-danger">Delete Plant</button>
@@ -162,76 +175,88 @@ class SinglePlant extends Component {
             </>
           )}
         </nav>
-        {this.state.loadedPlant && (
-          <>
-            <div className="title">
-              <h1>{this.state.plant.nickname}</h1>
-            </div>
+        <div className="single-plant">
+          {this.state.loadedPlant && !this.state.plant.apiId && (
+            <>
+              <div className="title">
+                <h1>{this.state.plant.nickname}</h1>
+                <img
+                  src={
+                    this.state.plant.image
+                      ? this.state.plant.image
+                      : '/images/default-image.jpeg'
+                  }
+                  alt={this.state.plant.nickname}
+                />
+              </div>
+            </>
+          )}
+          {(this.state.loadedPlant && this.state.loadedFromAPI && (
+            <>
+              <div className="title">
+                <h1>{this.state.plant.nickname}</h1>
 
-            <div className="single-plant">
-              {(this.state.loadedFromAPI && (
-                <>
-                  <div className="info-div">
-                    <img
-                      src={
-                        this.state.plant.image
-                          ? this.state.plant.image
-                          : infoFromAPI.attributes.main_image_path.includes(
-                              '/assets'
-                            )
-                          ? '/images/default-image.jpeg'
-                          : infoFromAPI.attributes.main_image_path
-                          ? infoFromAPI.attributes.main_image_path
-                          : '/images/default-image.jpeg'
-                      }
-                      alt={this.state.plant.nickname}
-                    />
+                <img
+                  src={
+                    this.state.plant.image
+                      ? this.state.plant.image
+                      : infoFromAPI.attributes.main_image_path.includes(
+                          '/assets'
+                        )
+                      ? '/images/default-image.jpeg'
+                      : infoFromAPI.attributes.main_image_path
+                      ? infoFromAPI.attributes.main_image_path
+                      : '/images/default-image.jpeg'
+                  }
+                  alt={this.state.plant.nickname}
+                />
+              </div>
+              <div className="info-div">
+                {infoFromAPI.attributes.name && (
+                  <p>
+                    <strong>Common name:</strong> {infoFromAPI.attributes.name}
+                  </p>
+                )}
 
-                    <div className="info-div">
-                      {infoFromAPI.attributes.name && (
-                        <p>
-                          <strong>Common name:</strong>{' '}
-                          {infoFromAPI.attributes.name}
-                        </p>
-                      )}
+                {infoFromAPI.attributes.binomial_name && (
+                  <p>
+                    <strong>Scientific name:</strong>{' '}
+                    {infoFromAPI.attributes.binomial_name}
+                  </p>
+                )}
 
-                      {infoFromAPI.attributes.binomial_name && (
-                        <p>
-                          <strong>Scientific name:</strong>{' '}
-                          {infoFromAPI.attributes.binomial_name}
-                        </p>
-                      )}
+                {infoFromAPI.attributes.description && (
+                  <p>
+                    <strong>Description:</strong>{' '}
+                    {infoFromAPI.attributes.description}
+                  </p>
+                )}
 
-                      {infoFromAPI.attributes.description && (
-                        <p>
-                          <strong>Description:</strong>{' '}
-                          {infoFromAPI.attributes.description}
-                        </p>
-                      )}
+                {infoFromAPI.attributes.sun_requirements && (
+                  <p>
+                    <strong>Sun Requirements:</strong>{' '}
+                    {infoFromAPI.attributes.sun_requirements}
+                  </p>
+                )}
 
-                      {infoFromAPI.attributes.sun_requirements && (
-                        <p>
-                          <strong>Sun Requirements:</strong>{' '}
-                          {infoFromAPI.attributes.sun_requirements}
-                        </p>
-                      )}
-
-                      {infoFromAPI.attributes.sowing_method && (
-                        <p>
-                          <strong>How to sow:</strong>{' '}
-                          {infoFromAPI.attributes.sowing_method}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </>
-              )) || (
-                <>
-                  <div className="spinner-border ml-5" role="status">
-                    <span className="sr-only ml-5">Loading...</span>
-                  </div>
-                </>
-              )}
+                {infoFromAPI.attributes.sowing_method && (
+                  <p>
+                    <strong>How to sow:</strong>{' '}
+                    {infoFromAPI.attributes.sowing_method}
+                  </p>
+                )}
+              </div>
+            </>
+          )) ||
+            (!this.state.noAPIid && (
+              <>
+                <div className="spinner-border ml-5" role="status">
+                  <span className="sr-only ml-5">Loading...</span>
+                </div>
+              </>
+            ))}
+          {this.state.loadedPlant && (
+            <>
               <div className="tasks-plant-div">
                 <h3 className="dashboard">Add a new task</h3>
                 <form
@@ -259,7 +284,7 @@ class SinglePlant extends Component {
                     onChange={this.handleInputChange}
                   />
 
-                  <button className="btn btn-light">Add</button>
+                  <button className="btn btn-secondary">Add</button>
                 </form>
 
                 {this.state.loadedTasks && (
@@ -275,7 +300,7 @@ class SinglePlant extends Component {
                             <strong>When?</strong> {date.toDateString()}
                           </p>
                           <button
-                            className="btn btn-dark"
+                            className="btn btn-secondary"
                             onClick={() => this.handleTaskCompletion(item._id)}
                           >
                             {' '}
@@ -300,9 +325,9 @@ class SinglePlant extends Component {
                   </div>
                 )}
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     );
   }
