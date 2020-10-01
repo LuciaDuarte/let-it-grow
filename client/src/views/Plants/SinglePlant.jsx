@@ -7,7 +7,6 @@ import {
   updateTask
 } from './../../services/tasks';
 import { Link } from 'react-router-dom';
-import EditPlantModal from './../../components/EditPlantModal';
 
 class SinglePlant extends Component {
   constructor() {
